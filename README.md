@@ -52,3 +52,5 @@ function voteCampaign(uint256 _campaignId, uint256 _value) public alreadyRegiste
     totalCampaignVotes[_campaignId] += _value; 
 }
 ```
+
+This is not the final idea of the project, it's just a draft there are still many concepts missing from the blockchain part and the React frontend part. I will insert my ideas here a little at a time.
