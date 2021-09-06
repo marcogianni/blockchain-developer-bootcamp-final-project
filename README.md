@@ -45,7 +45,7 @@ mapping(uint256 => uint256) public totalCampaignVotes;
 3. Users will need to call the following function to vote.
 
 ```solidity
-function voteCampaign(unit256 _campaignId, uint256 _value) public alreadyRegistered {
+function voteCampaign(uint256 _campaignId, uint256 _value) public alreadyRegistered {
     require(votes[_campaignId][msg.sender] != 0, "Already voted this campaign");
 
     votes[_campaignId][msg.sender] = _value;
