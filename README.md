@@ -25,7 +25,7 @@ Workflow example
    2. The owner decides the liquidity provider address (The owner will need to ensure that their liquidity provider own the currency they want to use for salaries)
 3. Owner add new record (publicAddress => monthlySalary)
 4. Once the record is added, the employee must wait 30 days before being allowed to withdraw.
-5. 
+ 
 
 So every 30 days the employee can withdraw their amount.
 
