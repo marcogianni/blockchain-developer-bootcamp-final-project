@@ -34,7 +34,7 @@ const ConnectPage = () => {
       />
 
       <Button
-        variant="outlined"
+        variant="contained"
         size="large"
         startIcon={<Metamask style={{ width: 30 }} />}
         style={{ padding: "15px 30px" }}
