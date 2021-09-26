@@ -49,7 +49,6 @@ contract Salaries is Ownable, ReentrancyGuard {
 
     /*
      * Only the owner can call this function.
-     *
      */
     function removeEmployee(address _employee) public onlyOwner {
         salaries[_employee] = 0;
