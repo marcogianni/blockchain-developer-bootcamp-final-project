@@ -70,4 +70,7 @@ contract Salaries is Ownable, ReentrancyGuard {
         // or
         // use another variable to check the change date
     }
+
+    // TODO
+    function calculateWithdrawal() public receivesASalary(msg.sender) {}
 }
