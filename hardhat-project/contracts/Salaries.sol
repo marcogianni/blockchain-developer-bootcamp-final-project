@@ -21,7 +21,54 @@ contract Salaries is Ownable, ReentrancyGuard {
      */
     mapping(address => uint256) public salaries;
 
+    /*
+     * This variable is used to track how much time has passed since the employee's last paycheck.
+     * Each time the employee withdraws the entire sum, which can be for a month or cumulative for a period.
+     * The employee can choose to withdraw every month, or whenever he wants as long as at least a month has passed.
+     * A newly hired employee cannot withdraw his calculated sum, he has to wait for 30 days to pass.
+
+     * The calculation of how much an employee can withdraw depends on the salary (greater than zero) and the last date saved in this mapping.
+     */
+    mapping(address => uint256) public dates;
+    uint16 public totalEmployees; // max 65535 employee
+
+    // Check if an address is an employee (receiving a salary)
     modifier receivesASalary(address _address) {
         require(salaries[_address] > 0, "Invalid address");
+        _;
+    }
+
+    /*
+     * Only the owner can call this function.
+     * The employee must already receive a salary.
+     */
+    function addEmployee(address _employee, uint256 _salary) public onlyOwner {
+        require(salaries[_employee] == 0, "Already has a salary");
+        salaries[_employee] = _salary;
+    }
+
+    /*
+     * Only the owner can call this function.
+     *
+     */
+    function removeEmployee(address _employee) public onlyOwner {
+        salaries[_employee] = 0;
+    }
+
+    /*
+     * Only the owner can call this function.
+     * The employee must already receive a salary.
+     * WARNING: The employee must receive the sum correctly when the salary changes
+     */
+    function changeEmployeeSalary(address _employee, uint256 _salary)
+        public
+        onlyOwner
+        receivesASalary(_employee)
+    {
+        salaries[_employee] = _salary;
+
+        // Should remove the employee if the last retirement date is within the 30-day range and then re-enter the employee with a new salary value.
+        // or
+        // use another variable to check the change date
     }
 }
