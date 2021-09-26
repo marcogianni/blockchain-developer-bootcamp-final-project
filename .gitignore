@@ -27,3 +27,11 @@ frontend-react/.env.production.local
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+hardhat-project/node_modules
+hardhat-project/.env
+
+#Hardhat files
+hardhat-project/cache
+hardhat-project/artifacts
