@@ -29,7 +29,9 @@ contract Salaries is Ownable, ReentrancyGuard {
 
      * The calculation of how much an employee can withdraw depends on the salary (greater than zero) and the last date saved in this mapping.
      */
-    mapping(address => uint256) public dates;
+    mapping(address => uint256) public startDates;
+    mapping(address => uint256) public removalDates;
+    mapping(address => uint256) public salaryChangeDate;
     uint16 public totalEmployees; // max 65535 employee
 
     // Check if an address is an employee (receiving a salary)
@@ -45,13 +47,17 @@ contract Salaries is Ownable, ReentrancyGuard {
     function addEmployee(address _employee, uint256 _salary) public onlyOwner {
         require(salaries[_employee] == 0, "Already has a salary");
         salaries[_employee] = _salary;
+        startDates[_employee] = _now();
     }
 
     /*
      * Only the owner can call this function.
      */
     function removeEmployee(address _employee) public onlyOwner {
+        require(salaries[_employee] != 0, "Not an Employee");
         salaries[_employee] = 0;
+        removalDates[_employee] = _now();
+        startDates[_employee] = 0;
     }
 
     /*
@@ -65,12 +71,26 @@ contract Salaries is Ownable, ReentrancyGuard {
         receivesASalary(_employee)
     {
         salaries[_employee] = _salary;
+        salaryChangeDate[_employee] = _now();
 
         // Should remove the employee if the last retirement date is within the 30-day range and then re-enter the employee with a new salary value.
         // or
         // use another variable to check the change date
     }
 
+    function withdraw() public receivesASalary(msg.sender) {}
+
     // TODO
-    function calculateWithdrawal() public receivesASalary(msg.sender) {}
+    function calculateWithdrawal() public receivesASalary(msg.sender) {
+        uint256 timePassed = _now().sub(depositDates[_sender][_depositId]);
+    }
+
+    /*
+     * Returns current timestamp.
+     */
+    function _now() internal view returns (uint256) {
+        // Note that the timestamp can have a 900-second error:
+        // https://github.com/ethereum/wiki/blob/c02254611f218f43cbb07517ca8e5d00fd6d6d75/Block-Protocol-2.0.md
+        return block.timestamp;
+    }
 }
