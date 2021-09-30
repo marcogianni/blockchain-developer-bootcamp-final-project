@@ -11,9 +11,15 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
+// Interfaces
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 contract Salaries is Ownable, ReentrancyGuard {
     using Address for address;
     using SafeMath for uint256;
+
+    IERC20 public token; // the withdraw token ( I will use DAI )
 
     /*
      * Contains the monthly salary for each employee. If not present, the value will be zero.
@@ -54,7 +60,7 @@ contract Salaries is Ownable, ReentrancyGuard {
      * Only the owner can call this function.
      */
     function removeEmployee(address _employee) public onlyOwner {
-        require(salaries[_employee] != 0, "Not an Employee");
+        require(salaries[_employee] != 0, "Not an employee");
         salaries[_employee] = 0;
         removalDates[_employee] = _now();
         startDates[_employee] = 0;
@@ -78,11 +84,35 @@ contract Salaries is Ownable, ReentrancyGuard {
         // use another variable to check the change date
     }
 
-    function withdraw() public receivesASalary(msg.sender) {}
+    function withdraw() public receivesASalary(msg.sender) {
+        uint256 finalBalanceToWithdraw = calculateWithdrawal(msg.sender);
+
+        // transferFrom liquidityProviderAdderess to sender // TODO INITIALIZE CONTRACT
+        // require(token.transferFrom(liquidityProviderAddess(), _sender, finalBalance), "Liquidity pool transfer failed");
+    }
 
     // TODO
-    function calculateWithdrawal() public receivesASalary(msg.sender) {
+    function calculateWithdrawal(address _employee) public returns (uint256) {
         uint256 timePassed = _now().sub(depositDates[_sender][_depositId]);
+        uint256 finalBalance = 0; // TODO CALC
+
+        return finalBalance;
+    }
+
+    /**
+     * @dev Initializes the contract
+     * @param _tokenAddress The address of the token contract.
+     * @param _liquidityProviderAddress The address for the Liquidity Provider
+     */
+    function initializeContract(
+        address _tokenAddress,
+        address _liquidityProviderAddress
+    ) external onlyOwner {
+        require(_owner != address(0), "Zero address");
+        require(_tokenAddress.isContract(), "Not a contract address");
+        token = IERC20(_tokenAddress);
+        setLiquidityProviderAddress(_liquidityProviderAddress);
+        Ownable.transferOwnership(_owner);
     }
 
     /*
