@@ -90,4 +90,25 @@ describe("Salaries - TEST", () => {
       expect(ownerDAIBalance.toString()).to.equal(initialTotalSupply);
     });
   });
+
+  describe("Salaries Contract", () => {
+    it("Should deploy", async () => {
+      salaries = await Salaries.deploy();
+      await salaries.deployed();
+      salariesAddress = salaries.address;
+      console.debug("\t\t\tContract Address: ", salariesAddress);
+    });
+  });
+
+  describe("DAI Token Approve", () => {
+    it("Should test 'approve' and 'allowance' from the owner to first Comer", async function () {
+      const amountForApproval = "1000000000000000000000";
+      await daiToken.approve(salariesAddress, amountForApproval);
+      const allowance = await daiToken.allowance(
+        owner.address,
+        salariesAddress
+      );
+      expect(allowance.toString()).to.equal(amountForApproval.toString());
+    });
+  });
 });
