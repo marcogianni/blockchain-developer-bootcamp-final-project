@@ -60,4 +60,34 @@ describe("Salaries - TEST", () => {
       );
     });
   });
+
+  describe("DAI Token Contract", () => {
+    it("Should deploy", async () => {
+      daiToken = await DAIToken.deploy();
+      await daiToken.deployed();
+
+      daiTokenAddress = daiToken.address;
+      console.debug("\t\t\tDAI Token Contract Address:", daiTokenAddress);
+
+      const balance = await provider.getBalance(owner.address);
+      console.debug("\n\t\t\tOWNER", owner.address);
+      console.debug("\t\t\tOWNER ETH Balance:", balance.toString());
+    });
+
+    it("Owner should own Total Supply", async () => {
+      const ownerDAIBalance = await daiToken.balanceOf(owner.address);
+      console.debug(
+        "\t\t\tOWNER DAI Balance:",
+        `${ownerDAIBalance.toString()}`
+      );
+
+      initialTotalSupply = await daiToken.totalSupply();
+      console.debug(
+        "\t\t\tInitial Total Supply:",
+        `${initialTotalSupply.toString()}`
+      );
+
+      expect(ownerDAIBalance.toString()).to.equal(initialTotalSupply);
+    });
+  });
 });
