@@ -12,7 +12,6 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
 // Interfaces
-
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Salaries is Ownable, ReentrancyGuard {
@@ -36,7 +35,7 @@ contract Salaries is Ownable, ReentrancyGuard {
      * The calculation of how much an employee can withdraw depends on the salary (greater than zero) and the last date saved in this mapping.
      */
     mapping(address => uint256) public startDates;
-    mapping(address => uint256) public removalDates;
+    mapping(address => uint256) public withdrawDates;
     mapping(address => uint256) public salaryChangeDate;
     uint16 public totalEmployees; // max 65535 employee
 
@@ -54,6 +53,7 @@ contract Salaries is Ownable, ReentrancyGuard {
         require(salaries[_employee] == 0, "Already has a salary");
         salaries[_employee] = _salary;
         startDates[_employee] = _now();
+        totalEmployees += 1;
     }
 
     /*
@@ -62,8 +62,8 @@ contract Salaries is Ownable, ReentrancyGuard {
     function removeEmployee(address _employee) public onlyOwner {
         require(salaries[_employee] != 0, "Not an employee");
         salaries[_employee] = 0;
-        removalDates[_employee] = _now();
         startDates[_employee] = 0;
+        totalEmployees -= 1;
     }
 
     /*
@@ -85,18 +85,43 @@ contract Salaries is Ownable, ReentrancyGuard {
     }
 
     function withdraw() public receivesASalary(msg.sender) {
-        uint256 finalBalanceToWithdraw = calculateWithdrawal(msg.sender);
-
+        // require(_now().sub(withdrawDates[msg.sender]) < 30 days, "Too early"); // You cannot withdraw before 30 days
+        // uint256 finalBalanceToWithdraw = calculateWithdrawal(msg.sender);
+        // withdrawDates[msg.sender] = _now();
         // transferFrom liquidityProviderAdderess to sender // TODO INITIALIZE CONTRACT
-        // require(token.transferFrom(liquidityProviderAddess(), _sender, finalBalance), "Liquidity pool transfer failed");
+        // require(token.transferFrom(liquidityProviderAddess(), _sender, finalBalanceToWithdraw), "Liquidity pool transfer failed");
     }
 
-    // TODO
+    // TODO fix range startDates withdrawDates
     function calculateWithdrawal(address _employee) public returns (uint256) {
-        uint256 timePassed = _now().sub(depositDates[_sender][_depositId]);
-        uint256 finalBalance = 0; // TODO CALC
+        // If there is no start date, not an employee
+        if (startDates[_employee] == 0) {
+            return 0;
+        }
 
-        return finalBalance;
+        // Since hiring never withdrawn
+        if (withdrawDates[_employee] == 0) {
+            uint256 timePassed = _now().sub(startDates[_sender]);
+
+            if (timePassed < 30 days) {
+                return 0;
+            }
+
+            uint256 totalMonths = timePassed.div(30 days);
+            return salaries[_employee].mul(totalMonths);
+        }
+
+        // Has withdrawn at least once
+        if (withdrawDates[_employee] > startDates[_employee]) {
+            uint256 timePassed = _now().sub(withdrawDates[_sender]);
+
+            if (timePassed < 30 days) {
+                return 0;
+            }
+
+            uint256 totalMonths = timePassed.div(30 days);
+            return salaries[_employee].mul(totalMonths);
+        }
     }
 
     /**
@@ -105,7 +130,7 @@ contract Salaries is Ownable, ReentrancyGuard {
      * @param _liquidityProviderAddress The address for the Liquidity Provider
      */
     function initializeContract(
-        address _tokenAddress,
+        address _tokenAddress, // 0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea DAI Rinkeby
         address _liquidityProviderAddress
     ) external onlyOwner {
         require(_owner != address(0), "Zero address");
