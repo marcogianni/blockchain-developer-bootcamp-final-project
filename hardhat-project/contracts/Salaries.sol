@@ -18,7 +18,26 @@ contract Salaries is Ownable, ReentrancyGuard {
     using Address for address;
     using SafeMath for uint256;
 
+    struct AddressParam {
+        address oldValue;
+        address newValue;
+        uint256 timestamp;
+    }
+
+    /**
+     * Emitted when a new Liquidity Provider address value is set.
+     * @param value A new address value.
+     * @param sender The owner address at the moment of address changing.
+     */
+    event LiquidityProviderAddressSet(address value, address sender);
+
+    // The address for the Liquidity Providers
+    AddressParam public liquidityProviderAddressParam;
+
     IERC20 public token; // the withdraw token ( I will use DAI )
+
+    // The period after which the new value of the parameter is set
+    uint256 public constant PARAM_UPDATE_DELAY = 7 days;
 
     /*
      * Contains the monthly salary for each employee. If not present, the value will be zero.
@@ -93,7 +112,11 @@ contract Salaries is Ownable, ReentrancyGuard {
     }
 
     // TODO fix range startDates withdrawDates
-    function calculateWithdrawal(address _employee) public returns (uint256) {
+    function calculateWithdrawal(address _employee)
+        public
+        view
+        returns (uint256)
+    {
         // If there is no start date, not an employee
         if (startDates[_employee] == 0) {
             return 0;
@@ -101,19 +124,19 @@ contract Salaries is Ownable, ReentrancyGuard {
 
         // Since hiring never withdrawn
         if (withdrawDates[_employee] == 0) {
-            uint256 timePassed = _now().sub(startDates[_sender]);
+            uint256 timePassed = _now().sub(startDates[_employee]);
 
             if (timePassed < 30 days) {
                 return 0;
             }
 
-            uint256 totalMonths = timePassed.div(30 days);
-            return salaries[_employee].mul(totalMonths);
+            uint256 monthsPassed = timePassed.div(30 days);
+            return salaries[_employee].mul(monthsPassed);
         }
 
         // Has withdrawn at least once
         if (withdrawDates[_employee] > startDates[_employee]) {
-            uint256 timePassed = _now().sub(withdrawDates[_sender]);
+            uint256 timePassed = _now().sub(withdrawDates[_employee]);
 
             if (timePassed < 30 days) {
                 return 0;
@@ -122,22 +145,55 @@ contract Salaries is Ownable, ReentrancyGuard {
             uint256 totalMonths = timePassed.div(30 days);
             return salaries[_employee].mul(totalMonths);
         }
+
+        return 0; // to compile
     }
 
     /**
-     * @dev Initializes the contract
+     * Initializes the contract
      * @param _tokenAddress The address of the token contract.
      * @param _liquidityProviderAddress The address for the Liquidity Provider
      */
     function initializeContract(
+        address _owner,
         address _tokenAddress, // 0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea DAI Rinkeby
         address _liquidityProviderAddress
     ) external onlyOwner {
-        require(_owner != address(0), "Zero address");
         require(_tokenAddress.isContract(), "Not a contract address");
         token = IERC20(_tokenAddress);
         setLiquidityProviderAddress(_liquidityProviderAddress);
         Ownable.transferOwnership(_owner);
+    }
+
+    /**
+     * Sets the address for the Liquidity Providers.
+     * Can only be called by owner.
+     * @param _address The new address.
+     */
+    function setLiquidityProviderAddress(address _address) public onlyOwner {
+        require(_address != address(0), "Zero address");
+        require(_address != address(this), "Wrong address");
+        AddressParam memory param = liquidityProviderAddressParam;
+        if (param.timestamp == 0) {
+            param.oldValue = _address;
+        } else if (_paramUpdateDelayElapsed(param.timestamp)) {
+            param.oldValue = param.newValue;
+        }
+        param.newValue = _address;
+        param.timestamp = _now();
+        liquidityProviderAddressParam = param;
+        emit LiquidityProviderAddressSet(_address, msg.sender);
+    }
+
+    /**
+     * @return Returns true if param update delay elapsed.
+     */
+    function _paramUpdateDelayElapsed(uint256 _paramTimestamp)
+        internal
+        view
+        returns (bool)
+    {
+        return _now() > _paramTimestamp.add(PARAM_UPDATE_DELAY);
     }
 
     /*
