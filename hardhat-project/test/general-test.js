@@ -101,7 +101,7 @@ describe("Salaries - TEST", () => {
   });
 
   describe("DAI Token Approve", () => {
-    it("Should test 'approve' and 'allowance' from the owner to first Comer", async function () {
+    it("Should test 'approve' and 'allowance' from the owner to first Comer", async () => {
       const amountForApproval = "1000000000000000000000";
       await daiToken.approve(salariesAddress, amountForApproval);
       const allowance = await daiToken.allowance(
