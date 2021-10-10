@@ -38,6 +38,7 @@ contract Salaries is Ownable, ReentrancyGuard {
 
     // The period after which the new value of the parameter is set
     uint256 public constant PARAM_UPDATE_DELAY = 7 days;
+    uint256 public constant MONTH = 30 days;
 
     /*
      * Contains the monthly salary for each employee. If not present, the value will be zero.
@@ -53,14 +54,13 @@ contract Salaries is Ownable, ReentrancyGuard {
 
      * The calculation of how much an employee can withdraw depends on the salary (greater than zero) and the last date saved in this mapping.
      */
-    mapping(address => uint256) public startDates;
-    mapping(address => uint256) public withdrawDates;
+    mapping(address => uint256) public dates;
     mapping(address => uint256) public salaryChangeDate;
     uint16 public totalEmployees; // max 65535 employee
 
     // Check if an address is an employee (receiving a salary)
     modifier receivesASalary(address _address) {
-        require(salaries[_address] > 0, "Invalid address");
+        require(salaries[_address] > 0, "Not an employee");
         _;
     }
 
@@ -71,7 +71,7 @@ contract Salaries is Ownable, ReentrancyGuard {
     function addEmployee(address _employee, uint256 _salary) public onlyOwner {
         require(salaries[_employee] == 0, "Already has a salary");
         salaries[_employee] = _salary;
-        startDates[_employee] = _now();
+        dates[_employee] = _now();
         totalEmployees += 1;
     }
 
@@ -81,72 +81,65 @@ contract Salaries is Ownable, ReentrancyGuard {
     function removeEmployee(address _employee) public onlyOwner {
         require(salaries[_employee] != 0, "Not an employee");
         salaries[_employee] = 0;
-        startDates[_employee] = 0;
+        dates[_employee] = 0;
         totalEmployees -= 1;
     }
 
-    /*
-     * Only the owner can call this function.
-     * The employee must already receive a salary.
-     * WARNING: The employee must receive the sum correctly when the salary changes
-     */
-    function changeEmployeeSalary(address _employee, uint256 _salary)
-        public
-        onlyOwner
-        receivesASalary(_employee)
-    {
-        salaries[_employee] = _salary;
-        salaryChangeDate[_employee] = _now();
-
-        // Should remove the employee if the last retirement date is within the 30-day range and then re-enter the employee with a new salary value.
-        // or
-        // use another variable to check the change date
-    }
-
     function withdraw() public receivesASalary(msg.sender) {
-        // require(_now().sub(withdrawDates[msg.sender]) < 30 days, "Too early"); // You cannot withdraw before 30 days
-        // uint256 finalBalanceToWithdraw = calculateWithdrawal(msg.sender);
-        // withdrawDates[msg.sender] = _now();
-        // transferFrom liquidityProviderAdderess to sender // TODO INITIALIZE CONTRACT
-        // require(token.transferFrom(liquidityProviderAddess(), _sender, finalBalanceToWithdraw), "Liquidity pool transfer failed");
+        require(_now().sub(dates[msg.sender]) > 30 days, "Too early"); // You cannot withdraw before 30 days
+
+        _withdraw(msg.sender);
     }
 
-    // TODO fix range startDates withdrawDates
+    function _withdraw(address _employee) internal nonReentrant {
+        (
+            uint256 finalBalanceToWithdraw,
+            uint256 monthsCount
+        ) = calculateWithdrawal(msg.sender);
+
+        dates[_employee] += (monthsCount * MONTH);
+
+        require(
+            token.transferFrom(
+                liquidityProviderAddress(),
+                msg.sender,
+                finalBalanceToWithdraw
+            ),
+            "Transfer failed"
+        );
+    }
+
+    /**
+     * Function that calculates how many months have passed since the last payroll
+     * withdrawal or the start of payroll.
+     *
+     * Returns the total salary withdrawable from the employee by multiplying
+     * the number of months passed by the monthly salary, and the months count.
+     *
+     * If startDates[_employee] == 0 then it is not an employee and is not entitled to a salary.
+     *
+     * @param _employee The employee address
+     * @return amount to withdraw and months count
+     */
     function calculateWithdrawal(address _employee)
         public
         view
-        returns (uint256)
+        returns (uint256, uint256)
     {
         // If there is no start date, not an employee
-        if (startDates[_employee] == 0) {
-            return 0;
+        if (dates[_employee] == 0) {
+            return (0, 0);
         }
 
-        // Since hiring never withdrawn
-        if (withdrawDates[_employee] == 0) {
-            uint256 timePassed = _now().sub(startDates[_employee]);
+        uint256 monthsCount = 0;
 
-            if (timePassed < 30 days) {
-                return 0;
+        for (uint256 i = dates[_employee]; i <= _now(); i = i + MONTH) {
+            if (_now() < i + MONTH) {
+                monthsCount++;
             }
-
-            uint256 monthsPassed = timePassed.div(30 days);
-            return salaries[_employee].mul(monthsPassed);
         }
 
-        // Has withdrawn at least once
-        if (withdrawDates[_employee] > startDates[_employee]) {
-            uint256 timePassed = _now().sub(withdrawDates[_employee]);
-
-            if (timePassed < 30 days) {
-                return 0;
-            }
-
-            uint256 totalMonths = timePassed.div(30 days);
-            return salaries[_employee].mul(totalMonths);
-        }
-
-        return 0; // to compile
+        return (salaries[_employee] * monthsCount, monthsCount);
     }
 
     /**
@@ -165,7 +158,7 @@ contract Salaries is Ownable, ReentrancyGuard {
         Ownable.transferOwnership(_owner);
     }
 
-    /**
+    /*
      * Sets the address for the Liquidity Providers.
      * Can only be called by owner.
      * @param _address The new address.
@@ -183,6 +176,14 @@ contract Salaries is Ownable, ReentrancyGuard {
         param.timestamp = _now();
         liquidityProviderAddressParam = param;
         emit LiquidityProviderAddressSet(_address, msg.sender);
+    }
+
+    /**
+     * Returns current liquidity providers reward address.
+     */
+    function liquidityProviderAddress() public view returns (address) {
+        AddressParam memory param = liquidityProviderAddressParam;
+        return param.newValue;
     }
 
     /**
