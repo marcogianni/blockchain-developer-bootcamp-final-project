@@ -3,6 +3,7 @@ const { BigNumber } = require("ethers");
 const { time } = require("@openzeppelin/test-helpers");
 
 const MONTH = 2592000;
+const DAY = 86400;
 
 const displayTime = (unixTime) => {
   var date = new Date(unixTime * 1000).toLocaleString("it-IT");
@@ -109,6 +110,163 @@ describe("Salaries - TEST", () => {
         salariesAddress
       );
       expect(allowance.toString()).to.equal(amountForApproval.toString());
+    });
+  });
+
+  describe("Salaries Contract Fist Check", () => {
+    it("Should initialize", async () => {
+      await salaries
+        .connect(owner)
+        .initializeContract(owner.address, daiTokenAddress, addr18.address);
+      const liquidityProviderAddressParam =
+        await salaries.liquidityProviderAddressParam();
+      const liquidityProviderBalance = await daiToken.balanceOf(
+        liquidityProviderAddressParam.newValue
+      );
+      console.debug(
+        "\n\tLiquidity provider Address:",
+        liquidityProviderAddressParam.newValue
+      );
+      console.debug(
+        "\tLiquidity provider Balance:",
+        ethers.utils.formatEther(liquidityProviderBalance.toString()) + " DAI"
+      );
+      expect(liquidityProviderAddressParam.newValue).to.equal(addr18.address);
+    });
+
+    it("Set Liquidity Provider Allowance (addr18) ", async () => {
+      await daiToken
+        .connect(addr18)
+        .approve(salariesAddress, "100000000000000000000000");
+      const allowance = await daiToken
+        .connect(addr18)
+        .allowance(addr18.address, salariesAddress);
+      expect(allowance.toString()).to.equal("100000000000000000000000");
+    });
+
+    it("Owner should be the Deployer", async () => {
+      const ownerAddress = await salaries.owner();
+      expect(ownerAddress).to.equal(owner.address);
+    });
+  });
+
+  describe("Giving DAI to Liquidity Provider", () => {
+    it("Liquidity Provider Address should own 100000 DAI", async () => {
+      await daiToken
+        .connect(owner)
+        .transfer(addr18.address, "100000000000000000000000");
+      const addrOVRBalance = await daiToken.balanceOf(addr18.address);
+      expect(addrOVRBalance.toString()).to.equal("100000000000000000000000");
+    });
+  });
+
+  describe("Adding new employees", () => {
+    it("500 DAI per month for Addr1", async () => {
+      const salary = "500000000000000000000";
+      await salaries.connect(owner).addEmployee(addr1.address, salary);
+
+      const employeeSalary = await salaries
+        .connect(addr1)
+        .salaries(addr1.address);
+
+      expect(employeeSalary.toString()).to.equal(salary);
+    });
+
+    it("300 DAI per month for Addr2", async () => {
+      const salary = "300000000000000000000";
+      await salaries.connect(owner).addEmployee(addr2.address, salary);
+
+      const employeeSalary = await salaries
+        .connect(addr2)
+        .salaries(addr2.address);
+
+      expect(employeeSalary.toString()).to.equal(salary);
+    });
+
+    it("700 DAI per month for Addr3", async () => {
+      const salary = "700000000000000000000";
+      await salaries.connect(owner).addEmployee(addr3.address, salary);
+
+      const employeeSalary = await salaries
+        .connect(addr3)
+        .salaries(addr3.address);
+
+      expect(employeeSalary.toString()).to.equal(salary);
+    });
+
+    it("200 DAI per month for Addr4", async () => {
+      const salary = "200000000000000000000";
+      await salaries.connect(owner).addEmployee(addr4.address, salary);
+
+      const employeeSalary = await salaries
+        .connect(addr4)
+        .salaries(addr4.address);
+
+      expect(employeeSalary.toString()).to.equal(salary);
+    });
+
+    it("100 DAI per month for Addr5", async () => {
+      const salary = "700000000000000000000";
+      await salaries.connect(owner).addEmployee(addr5.address, salary);
+
+      const employeeSalary = await salaries
+        .connect(addr5)
+        .salaries(addr5.address);
+
+      expect(employeeSalary.toString()).to.equal(salary);
+    });
+
+    it("900 DAI per month for Addr6", async () => {
+      const salary = "900000000000000000000";
+      await salaries.connect(owner).addEmployee(addr6.address, salary);
+
+      const employeeSalary = await salaries
+        .connect(addr6)
+        .salaries(addr6.address);
+
+      expect(employeeSalary.toString()).to.equal(salary);
+    });
+
+    it("Should FAIL the addEmployee function called by the Addr7, ONLY OWNER", async () => {
+      const salary = "1000000000000000000000";
+      await expect(
+        salaries.connect(addr7).addEmployee(addr7.address, salary)
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+
+    it("Should FAIL the addEmployee function called by the owner to add Addr1 salary, Addr1 already receives a salary", async () => {
+      const salary = "1000000000000000000000";
+      await expect(
+        salaries.connect(owner).addEmployee(addr1.address, salary)
+      ).to.be.revertedWith("Already has a salary");
+    });
+
+    it("Should FAIL the removeEmployee function called by the owner for user that han not a salary", async () => {
+      const salary = "1000000000000000000000";
+      await expect(
+        salaries.connect(owner).removeEmployee(addr17.address)
+      ).to.be.revertedWith("Not an employee");
+    });
+  });
+
+  describe("Passing time........ 20 Days", () => {
+    it("It should be 20 days since the start", async () => {
+      currentBlock = await time.latest();
+
+      await time.increase(DAY * 20);
+
+      currentBlock = await time.latest();
+      const currentBlockNumber = await time.latestBlock();
+
+      console.debug(
+        "\t\t\tCurrent Block Number",
+        currentBlockNumber.toString()
+      );
+      console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
+      console.debug(
+        "\t\t\tCurrent Block Time",
+        displayTime(Number(currentBlock.toString()))
+      );
     });
   });
 });
