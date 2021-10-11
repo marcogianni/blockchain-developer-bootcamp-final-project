@@ -269,4 +269,56 @@ describe("Salaries - TEST", () => {
       );
     });
   });
+
+  describe("Withdrawals", () => {
+    it("Should FAIL withdraw Addr1", async () => {
+      await expect(salaries.connect(addr1).withdraw()).to.be.revertedWith(
+        "Too early"
+      );
+    });
+  });
+
+  describe("Passing time........ 10 Days", () => {
+    it("It should be 30 days since the start", async () => {
+      currentBlock = await time.latest();
+
+      await time.increase(DAY * 10);
+
+      currentBlock = await time.latest();
+      const currentBlockNumber = await time.latestBlock();
+
+      console.debug(
+        "\t\t\tCurrent Block Number",
+        currentBlockNumber.toString()
+      );
+      console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
+      console.debug(
+        "\t\t\tCurrent Block Time",
+        displayTime(Number(currentBlock.toString()))
+      );
+    });
+  });
+
+  describe("Withdrawals", () => {
+    it("Should PASS withdraw Addr1, should own 500 DAI, date should update", async () => {
+      await salaries.connect(addr1).withdraw();
+
+      const date = await salaries.connect(addr1).dates(addr1.address);
+
+      console.debug(
+        "\t\t\tWithdrawal Date  :",
+        displayTime(Number(date.toString()))
+      );
+
+      const salary = "500000000000000000000";
+
+      const ownerDAIBalance = await daiToken.balanceOf(addr1.address);
+      console.debug(
+        "\t\t\tAddr1 DAI Balance:",
+        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
+      );
+
+      expect(ownerDAIBalance.toString()).to.equal(salary);
+    });
+  });
 });

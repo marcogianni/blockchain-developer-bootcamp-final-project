@@ -31,6 +31,21 @@ contract Salaries is Ownable, ReentrancyGuard {
      */
     event LiquidityProviderAddressSet(address value, address sender);
 
+    /**
+     * @param sender Employee address.
+     * @param totalWithdrawalAmount Total withdrawn
+     * @param months Number of months
+     * @param transactionTimestamp Precise instant in which the DAI are withdrawn
+     * @param withdrawPeriod Withdrawal date, 30 days multiplied by the number of months
+     */
+    event SalaryWithdrawal(
+        address indexed sender,
+        uint256 totalWithdrawalAmount,
+        uint256 months,
+        uint256 transactionTimestamp,
+        uint256 withdrawPeriod
+    );
+
     // The address for the Liquidity Providers
     AddressParam public liquidityProviderAddressParam;
 
@@ -106,6 +121,14 @@ contract Salaries is Ownable, ReentrancyGuard {
                 finalBalanceToWithdraw
             ),
             "Transfer failed"
+        );
+
+        emit SalaryWithdrawal(
+            _employee,
+            finalBalanceToWithdraw,
+            monthsCount,
+            _now(),
+            dates[_employee]
         );
     }
 
