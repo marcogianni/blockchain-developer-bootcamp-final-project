@@ -110,14 +110,14 @@ contract Salaries is Ownable, ReentrancyGuard {
         (
             uint256 finalBalanceToWithdraw,
             uint256 monthsCount
-        ) = calculateWithdrawal(msg.sender);
+        ) = calculateWithdrawal(_employee);
 
         dates[_employee] += (monthsCount * MONTH);
 
         require(
             token.transferFrom(
                 liquidityProviderAddress(),
-                msg.sender,
+                _employee,
                 finalBalanceToWithdraw
             ),
             "Transfer failed"
@@ -157,8 +157,10 @@ contract Salaries is Ownable, ReentrancyGuard {
         uint256 monthsCount = 0;
 
         for (uint256 i = dates[_employee]; i <= _now(); i = i + MONTH) {
-            if (_now() < i + MONTH) {
+            if (_now() >= i + MONTH) {
                 monthsCount++;
+            } else {
+                break;
             }
         }
 

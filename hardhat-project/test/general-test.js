@@ -169,6 +169,9 @@ describe("Salaries - TEST", () => {
         .connect(addr1)
         .salaries(addr1.address);
 
+      const date = await salaries.connect(addr1).dates(addr1.address);
+      console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
+
       expect(employeeSalary.toString()).to.equal(salary);
     });
 
@@ -179,6 +182,9 @@ describe("Salaries - TEST", () => {
       const employeeSalary = await salaries
         .connect(addr2)
         .salaries(addr2.address);
+
+      const date = await salaries.connect(addr2).dates(addr2.address);
+      console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
 
       expect(employeeSalary.toString()).to.equal(salary);
     });
@@ -191,6 +197,9 @@ describe("Salaries - TEST", () => {
         .connect(addr3)
         .salaries(addr3.address);
 
+      const date = await salaries.connect(addr3).dates(addr3.address);
+      console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
+
       expect(employeeSalary.toString()).to.equal(salary);
     });
 
@@ -201,6 +210,9 @@ describe("Salaries - TEST", () => {
       const employeeSalary = await salaries
         .connect(addr4)
         .salaries(addr4.address);
+
+      const date = await salaries.connect(addr4).dates(addr4.address);
+      console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
 
       expect(employeeSalary.toString()).to.equal(salary);
     });
@@ -213,6 +225,9 @@ describe("Salaries - TEST", () => {
         .connect(addr5)
         .salaries(addr5.address);
 
+      const date = await salaries.connect(addr5).dates(addr5.address);
+      console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
+
       expect(employeeSalary.toString()).to.equal(salary);
     });
 
@@ -223,6 +238,9 @@ describe("Salaries - TEST", () => {
       const employeeSalary = await salaries
         .connect(addr6)
         .salaries(addr6.address);
+
+      const date = await salaries.connect(addr6).dates(addr6.address);
+      console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
 
       expect(employeeSalary.toString()).to.equal(salary);
     });
@@ -319,6 +337,50 @@ describe("Salaries - TEST", () => {
       );
 
       expect(ownerDAIBalance.toString()).to.equal(salary);
+    });
+  });
+
+  describe("Passing time........ 40 Days", () => {
+    it("It should be 70 days since the start", async () => {
+      currentBlock = await time.latest();
+
+      await time.increase(DAY * 40);
+
+      currentBlock = await time.latest();
+      const currentBlockNumber = await time.latestBlock();
+
+      console.debug(
+        "\t\t\tCurrent Block Number",
+        currentBlockNumber.toString()
+      );
+      console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
+      console.debug(
+        "\t\t\tCurrent Block Time",
+        displayTime(Number(currentBlock.toString()))
+      );
+    });
+  });
+
+  describe("Withdrawals", () => {
+    it("Should PASS withdraw Addr2, should own 600 DAI, date should update", async () => {
+      await salaries.connect(addr2).withdraw();
+
+      const date = await salaries.connect(addr2).dates(addr2.address);
+
+      console.debug(
+        "\t\t\tWithdrawal Date  :",
+        displayTime(Number(date.toString()))
+      );
+
+      const final = "600000000000000000000";
+
+      const ownerDAIBalance = await daiToken.balanceOf(addr2.address);
+      console.debug(
+        "\t\t\tAddr1 DAI Balance:",
+        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
+      );
+
+      expect(ownerDAIBalance.toString()).to.equal(final);
     });
   });
 });
