@@ -27,6 +27,7 @@
     "solidity-coverage": "^0.7.17"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "hardhat-tracer": "^1.0.0-alpha.6"
   }
 }
