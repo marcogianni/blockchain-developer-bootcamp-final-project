@@ -362,7 +362,7 @@ describe("Salaries - TEST", () => {
   });
 
   describe("Withdrawals", () => {
-    it("Should PASS withdraw Addr2, should own 600 DAI, date should update", async () => {
+    it("Should PASS withdraw Addr2, should widthdraw 2 months, date should update", async () => {
       await salaries.connect(addr2).withdraw();
 
       const date = await salaries.connect(addr2).dates(addr2.address);
@@ -376,7 +376,95 @@ describe("Salaries - TEST", () => {
 
       const ownerDAIBalance = await daiToken.balanceOf(addr2.address);
       console.debug(
-        "\t\t\tAddr1 DAI Balance:",
+        "\t\t\tAddr2 DAI Balance:",
+        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
+      );
+
+      expect(ownerDAIBalance.toString()).to.equal(final);
+    });
+  });
+
+  describe("Passing time........ 20 Days", () => {
+    it("It should be 90 days since the start", async () => {
+      currentBlock = await time.latest();
+
+      await time.increase(DAY * 20);
+
+      currentBlock = await time.latest();
+      const currentBlockNumber = await time.latestBlock();
+
+      console.debug(
+        "\t\t\tCurrent Block Number",
+        currentBlockNumber.toString()
+      );
+      console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
+      console.debug(
+        "\t\t\tCurrent Block Time",
+        displayTime(Number(currentBlock.toString()))
+      );
+    });
+  });
+
+  describe("Withdrawals", () => {
+    it("Should PASS withdraw Addr3, should widthdraw 3 months, date should update", async () => {
+      await salaries.connect(addr3).withdraw();
+
+      const date = await salaries.connect(addr3).dates(addr3.address);
+
+      console.debug(
+        "\t\t\tWithdrawal Date  :",
+        displayTime(Number(date.toString()))
+      );
+
+      const final = "2100000000000000000000";
+
+      const ownerDAIBalance = await daiToken.balanceOf(addr3.address);
+      console.debug(
+        "\t\t\tAddr3 DAI Balance:",
+        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
+      );
+
+      expect(ownerDAIBalance.toString()).to.equal(final);
+    });
+  });
+
+  describe("Passing time........ 10 Days", () => {
+    it("It should be 100 days since the start", async () => {
+      currentBlock = await time.latest();
+
+      await time.increase(DAY * 10);
+
+      currentBlock = await time.latest();
+      const currentBlockNumber = await time.latestBlock();
+
+      console.debug(
+        "\t\t\tCurrent Block Number",
+        currentBlockNumber.toString()
+      );
+      console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
+      console.debug(
+        "\t\t\tCurrent Block Time",
+        displayTime(Number(currentBlock.toString()))
+      );
+    });
+  });
+
+  describe("Withdrawals", () => {
+    it("Should PASS withdraw Addr4, should widthdraw 3 months, date should update", async () => {
+      await salaries.connect(addr4).withdraw();
+
+      const date = await salaries.connect(addr4).dates(addr4.address);
+
+      console.debug(
+        "\t\t\tWithdrawal Date  :",
+        displayTime(Number(date.toString()))
+      );
+
+      const final = "600000000000000000000";
+
+      const ownerDAIBalance = await daiToken.balanceOf(addr4.address);
+      console.debug(
+        "\t\t\tAddr4 DAI Balance:",
         `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
       );
 
