@@ -2,7 +2,7 @@
 
 ## ➡️ DEPLOY
 
-Check OVR and OVRLand address and then:
+Check `TOKEN_ADDRESS` (DAI Rinkeby) in the deploy script and then:
 ```
 npx hardhat run scripts/deploy.js
 ```
@@ -12,14 +12,14 @@ npx hardhat run scripts/deploy.js --network rinkeby
 ```
 
 ## ↩️ UPGRADE
-Remember to check the `PROXY_ADDRESS` and then:
+Remember to add the `PROXY_ADDRESS` and then:
 
 ```
 npx hardhat run scripts/upgrade.js
 ```
 
 State variable can't change, upgrade script allows only to update functions or add new state variables.
-(If I had time before November 30, I would use this script to add the employee salary update functionality to the Salaries smart contract)
+(If I had time before November 30, I would use this script to add the employee salary update functionality to the Salaries smart contract).
 
 ---
 
