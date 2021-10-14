@@ -33,3 +33,5 @@ I would also like to give the employee the option to choose to withdraw every mo
 By withdrawing after longer periods, instead of every month, it allows the employee to pay less fees per withdrawal.
 
 ---
+The text above is meant to be just a brief introduction of what my final project is.
+**Browse inside the `hardhat-project` or `frontend-react` folders to read the documentation.**
