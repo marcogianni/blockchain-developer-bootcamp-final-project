@@ -558,4 +558,71 @@ describe("Salaries - TEST", () => {
       expect(salary.toString()).to.equal("0");
     });
   });
+
+  describe("Withdrawals", () => {
+    it("Should PASS withdraw Addr4, should widthdraw 3 months, date should update", async () => {
+      await salaries.connect(addr4).withdraw();
+
+      const date = await salaries.connect(addr4).dates(addr4.address);
+
+      console.debug(
+        "\t\t\tWithdrawal Date  :",
+        displayTime(Number(date.toString()))
+      );
+
+      const final = "1200000000000000000000";
+
+      const ownerDAIBalance = await daiToken.balanceOf(addr4.address);
+      console.debug(
+        "\t\t\tAddr4 DAI Balance:",
+        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
+      );
+
+      expect(ownerDAIBalance.toString()).to.equal(final);
+    });
+  });
+
+  describe("Passing time........ 70 Days", () => {
+    it("It should be 250 days since the start", async () => {
+      currentBlock = await time.latest();
+
+      await time.increase(DAY * 70);
+
+      currentBlock = await time.latest();
+      const currentBlockNumber = await time.latestBlock();
+
+      console.debug(
+        "\t\t\tCurrent Block Number",
+        currentBlockNumber.toString()
+      );
+      console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
+      console.debug(
+        "\t\t\tCurrent Block Time",
+        displayTime(Number(currentBlock.toString()))
+      );
+    });
+  });
+
+  describe("Withdrawals", () => {
+    it("Should PASS withdraw Addr4, should widthdraw 2 months, date should update", async () => {
+      await salaries.connect(addr4).withdraw();
+
+      const date = await salaries.connect(addr4).dates(addr4.address);
+
+      console.debug(
+        "\t\t\tWithdrawal Date  :",
+        displayTime(Number(date.toString()))
+      );
+
+      const final = "1600000000000000000000";
+
+      const ownerDAIBalance = await daiToken.balanceOf(addr4.address);
+      console.debug(
+        "\t\t\tAddr4 DAI Balance:",
+        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
+      );
+
+      expect(ownerDAIBalance.toString()).to.equal(final);
+    });
+  });
 });

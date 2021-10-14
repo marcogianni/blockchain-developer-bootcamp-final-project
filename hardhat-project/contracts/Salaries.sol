@@ -124,6 +124,8 @@ contract Salaries is
     }
 
     /*
+     * This feature allows an employer to remove an employee's salary.
+     * The employee can withdraw up to the 30-day range prior to the removal date.
      * Only the owner can call this function.
      */
     function removeEmployee(address _employee) public onlyOwner whenNotPaused {
@@ -178,7 +180,11 @@ contract Salaries is
      * Returns the total salary withdrawable from the employee by multiplying
      * the number of months passed by the monthly salary, and the months count.
      *
-     * If startDates[_employee] == 0 then it is not an employee and is not entitled to a salary.
+     * The date is always updated in multiples of 30 days. This allows the employer to be assured that each
+     * employee receives the pay due every 30 days, allowing the employee to withdraw not necessarily every month
+     * (greatly reducing transaction fees).
+     *
+     * If dates[_employee] == 0 then it is not an employee and is not entitled to a salary.
      *
      * @param _employee The employee address
      * @return amount to withdraw and months count
@@ -197,6 +203,8 @@ contract Salaries is
 
         for (uint256 i = dates[_employee]; i <= _now(); i = i + MONTH) {
             if (_now() >= i + MONTH) {
+                // If a salary removal date has been scheduled and the date
+                // is in the 30-day range, do not add to the count.
                 if (
                     removalDates[_employee] != 0 &&
                     removalDates[_employee] <= i + MONTH
@@ -212,7 +220,7 @@ contract Salaries is
         return (salaries[_employee] * monthsCount, monthsCount);
     }
 
-    /*
+    /**
      * Sets the address for the Liquidity Providers.
      * Can only be called by owner.
      * @param _address The new address.
@@ -233,7 +241,7 @@ contract Salaries is
     }
 
     /**
-     * Returns current liquidity providers reward address.
+     * @return Current liquidity providers address.
      */
     function liquidityProviderAddress() public view returns (address) {
         AddressParam memory param = liquidityProviderAddressParam;
@@ -241,6 +249,7 @@ contract Salaries is
     }
 
     /**
+     * @param timestamp
      * @return Returns true if param update delay elapsed.
      */
     function _paramUpdateDelayElapsed(uint256 _paramTimestamp)
@@ -251,8 +260,8 @@ contract Salaries is
         return _now() > _paramTimestamp.add(PARAM_UPDATE_DELAY);
     }
 
-    /*
-     * Returns current timestamp.
+    /**
+     * @return current timestamp.
      */
     function _now() internal view returns (uint256) {
         // Note that the timestamp can have a 900-second error:
