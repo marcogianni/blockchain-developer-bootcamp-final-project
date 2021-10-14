@@ -4,19 +4,25 @@ pragma solidity 0.8.4;
 import "hardhat/console.sol";
 
 // Contracts
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol"; // Includes Intialize, Context
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 // Libraries
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
 // Interfaces
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract Salaries is Ownable, Initializable, ReentrancyGuard {
-    using Address for address;
+contract Salaries is
+    UUPSUpgradeable,
+    OwnableUpgradeable,
+    ReentrancyGuardUpgradeable,
+    PausableUpgradeable
+{
+    using AddressUpgradeable for address;
     using SafeMath for uint256;
 
     struct AddressParam {
@@ -80,16 +86,21 @@ contract Salaries is Ownable, Initializable, ReentrancyGuard {
      * @param _tokenAddress The address of the token contract.
      * @param _liquidityProviderAddress The address for the Liquidity Provider
      */
-    function initializeContract(
-        address _owner,
+    function initialize(
         address _tokenAddress, // 0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea DAI Rinkeby
         address _liquidityProviderAddress
     ) external initializer {
         require(_tokenAddress.isContract(), "Not a contract address");
+
+        __Ownable_init();
+        __Pausable_init();
+        __ReentrancyGuard_init();
+
         token = IERC20(_tokenAddress);
         setLiquidityProviderAddress(_liquidityProviderAddress);
-        Ownable.transferOwnership(_owner);
     }
+
+    function _authorizeUpgrade(address) internal override onlyOwner {}
 
     // Check if an address is an employee (receiving a salary)
     modifier receivesASalary(address _address) {
@@ -101,7 +112,11 @@ contract Salaries is Ownable, Initializable, ReentrancyGuard {
      * Only the owner can call this function.
      * The employee must already receive a salary.
      */
-    function addEmployee(address _employee, uint256 _salary) public onlyOwner {
+    function addEmployee(address _employee, uint256 _salary)
+        public
+        onlyOwner
+        whenNotPaused
+    {
         require(salaries[_employee] == 0, "Already has a salary");
         salaries[_employee] = _salary;
         dates[_employee] = _now();
@@ -111,13 +126,13 @@ contract Salaries is Ownable, Initializable, ReentrancyGuard {
     /*
      * Only the owner can call this function.
      */
-    function removeEmployee(address _employee) public onlyOwner {
+    function removeEmployee(address _employee) public onlyOwner whenNotPaused {
         require(salaries[_employee] != 0, "Not an employee");
         removalDates[_employee] = _now();
         totalEmployees -= 1;
     }
 
-    function withdraw() public receivesASalary(msg.sender) {
+    function withdraw() public receivesASalary(msg.sender) whenNotPaused {
         require(_now().sub(dates[msg.sender]) > 30 days, "Too early"); // You cannot withdraw before 30 days
 
         _withdraw(msg.sender);
@@ -243,5 +258,13 @@ contract Salaries is Ownable, Initializable, ReentrancyGuard {
         // Note that the timestamp can have a 900-second error:
         // https://github.com/ethereum/wiki/blob/c02254611f218f43cbb07517ca8e5d00fd6d6d75/Block-Protocol-2.0.md
         return block.timestamp;
+    }
+
+    function pause() public onlyOwner whenNotPaused {
+        _pause();
+    }
+
+    function unpause() public onlyOwner whenPaused {
+        _unpause();
     }
 }

@@ -115,9 +115,7 @@ describe("Salaries - TEST", () => {
 
   describe("Salaries Contract Fist Check", () => {
     it("Should initialize", async () => {
-      await salaries
-        .connect(owner)
-        .initializeContract(owner.address, daiTokenAddress, addr18.address);
+      await salaries.connect(owner).initialize(daiTokenAddress, addr18.address);
       const liquidityProviderAddressParam =
         await salaries.liquidityProviderAddressParam();
       const liquidityProviderBalance = await daiToken.balanceOf(
