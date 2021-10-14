@@ -199,7 +199,7 @@ contract Salaries is
             return (0, 0);
         }
 
-        uint256 monthsCount = 0;
+        uint256 monthsCount;
 
         for (uint256 i = dates[_employee]; i <= _now(); i = i + MONTH) {
             if (_now() >= i + MONTH) {
@@ -249,7 +249,7 @@ contract Salaries is
     }
 
     /**
-     * @param timestamp
+     * @param _paramTimestamp passed timestamp
      * @return Returns true if param update delay elapsed.
      */
     function _paramUpdateDelayElapsed(uint256 _paramTimestamp)
