@@ -1,15 +1,47 @@
-# Basic Sample Hardhat Project
+# Hardhat Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+## ➡️ DEPLOY
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
+Check OVR and OVRLand address and then:
 ```
+npx hardhat run scripts/deploy.js
+```
+By default script uses default hardhat network. To choose network run with:
+```
+npx hardhat run scripts/deploy.js --network rinkeby
+```
+
+## ↩️ UPGRADE
+Remember to check the `PROXY_ADDRESS` and then:
+
+```
+npx hardhat run scripts/upgrade.js
+```
+
+State variable can't change, upgrade script allows only to update functions or add new state variables.
+(If I had time before November 30, I would use this script to add the employee salary update functionality to the Salaries smart contract)
+
+---
+
+## 🔑 ENV
+
+Create an `.env` file on root
+
+```
+// used by hardhat-gas-reporter
+ETHERSCAN_API_KEY=""
+COINMARKETCAP_API_KEY=""
+
+PRIVATE_KEY=""
+INFURA_API_KEY=""
+LIQUIDY_PROVIDER_ADDRESS=""
+PROXY_ADDRESS=""
+
+```
+
+---
+
+## 📖 NOTES
+
+I used OpenZeppelin tooling to easily and securely deploy an upgradeable contract using the UUPS proxy pattern.
+
