@@ -1,6 +1,8 @@
 # Hardhat Project
 
-## ➡️ DEPLOY
+
+## USAGE
+### ➡️ DEPLOY
 
 Check `TOKEN_ADDRESS` (DAI Rinkeby) in the deploy script and then:
 ```
@@ -11,7 +13,7 @@ By default script uses default hardhat network. To choose network run with:
 npx hardhat run scripts/deploy.js --network rinkeby
 ```
 
-## ↩️ UPGRADE
+### ↩️ UPGRADE
 Remember to add the `PROXY_ADDRESS` and then:
 
 ```
@@ -21,9 +23,9 @@ npx hardhat run scripts/upgrade.js
 State variable can't change, upgrade script allows only to update functions or add new state variables.
 (If I had time before November 30, I would use this script to add the employee salary update functionality to the Salaries smart contract).
 
----
 
-## 🔑 ENV
+
+### 🔑 ENV
 
 Create an `.env` file on root
 
@@ -36,7 +38,6 @@ PRIVATE_KEY=""
 INFURA_API_KEY=""
 LIQUIDY_PROVIDER_ADDRESS=""
 PROXY_ADDRESS=""
-
 ```
 
 ---
