@@ -70,7 +70,8 @@ contract Salaries is Ownable, ReentrancyGuard {
      * The calculation of how much an employee can withdraw depends on the salary (greater than zero) and the last date saved in this mapping.
      */
     mapping(address => uint256) public dates;
-    mapping(address => uint256) public salaryChangeDate;
+    mapping(address => uint256) public salaryChangeDates;
+    mapping(address => uint256) public removalDate;
     uint16 public totalEmployees; // max 65535 employee
 
     // Check if an address is an employee (receiving a salary)
@@ -95,8 +96,7 @@ contract Salaries is Ownable, ReentrancyGuard {
      */
     function removeEmployee(address _employee) public onlyOwner {
         require(salaries[_employee] != 0, "Not an employee");
-        salaries[_employee] = 0;
-        dates[_employee] = 0;
+        removalDate[_employee] = _now();
         totalEmployees -= 1;
     }
 
@@ -112,7 +112,14 @@ contract Salaries is Ownable, ReentrancyGuard {
             uint256 monthsCount
         ) = calculateWithdrawal(_employee);
 
-        dates[_employee] += (monthsCount * MONTH);
+        if (removalDate[_employee] != 0) {
+            dates[_employee] += (monthsCount * MONTH);
+        } else {
+            // Completely remove employee, this is the last paycheck
+            dates[_employee] = 0;
+            removalDate[_employee] = 0;
+            salaries[_employee] = 0;
+        }
 
         require(
             token.transferFrom(
@@ -158,6 +165,12 @@ contract Salaries is Ownable, ReentrancyGuard {
 
         for (uint256 i = dates[_employee]; i <= _now(); i = i + MONTH) {
             if (_now() >= i + MONTH) {
+                if (
+                    removalDate[_employee] != 0 &&
+                    removalDate[_employee] <= i + MONTH
+                ) {
+                    break;
+                }
                 monthsCount++;
             } else {
                 break;
