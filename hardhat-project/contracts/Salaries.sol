@@ -6,6 +6,7 @@ import "hardhat/console.sol";
 // Contracts
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
 // Libraries
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
@@ -14,7 +15,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 // Interfaces
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract Salaries is Ownable, ReentrancyGuard {
+contract Salaries is Ownable, Initializable, ReentrancyGuard {
     using Address for address;
     using SafeMath for uint256;
 
@@ -71,8 +72,24 @@ contract Salaries is Ownable, ReentrancyGuard {
      */
     mapping(address => uint256) public dates;
     mapping(address => uint256) public salaryChangeDates;
-    mapping(address => uint256) public removalDate;
+    mapping(address => uint256) public removalDates;
     uint16 public totalEmployees; // max 65535 employee
+
+    /**
+     * Initializes the contract
+     * @param _tokenAddress The address of the token contract.
+     * @param _liquidityProviderAddress The address for the Liquidity Provider
+     */
+    function initializeContract(
+        address _owner,
+        address _tokenAddress, // 0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea DAI Rinkeby
+        address _liquidityProviderAddress
+    ) external initializer {
+        require(_tokenAddress.isContract(), "Not a contract address");
+        token = IERC20(_tokenAddress);
+        setLiquidityProviderAddress(_liquidityProviderAddress);
+        Ownable.transferOwnership(_owner);
+    }
 
     // Check if an address is an employee (receiving a salary)
     modifier receivesASalary(address _address) {
@@ -96,7 +113,7 @@ contract Salaries is Ownable, ReentrancyGuard {
      */
     function removeEmployee(address _employee) public onlyOwner {
         require(salaries[_employee] != 0, "Not an employee");
-        removalDate[_employee] = _now();
+        removalDates[_employee] = _now();
         totalEmployees -= 1;
     }
 
@@ -112,12 +129,12 @@ contract Salaries is Ownable, ReentrancyGuard {
             uint256 monthsCount
         ) = calculateWithdrawal(_employee);
 
-        if (removalDate[_employee] != 0) {
+        if (removalDates[_employee] == 0) {
             dates[_employee] += (monthsCount * MONTH);
         } else {
             // Completely remove employee, this is the last paycheck
             dates[_employee] = 0;
-            removalDate[_employee] = 0;
+            removalDates[_employee] = 0;
             salaries[_employee] = 0;
         }
 
@@ -166,8 +183,8 @@ contract Salaries is Ownable, ReentrancyGuard {
         for (uint256 i = dates[_employee]; i <= _now(); i = i + MONTH) {
             if (_now() >= i + MONTH) {
                 if (
-                    removalDate[_employee] != 0 &&
-                    removalDate[_employee] <= i + MONTH
+                    removalDates[_employee] != 0 &&
+                    removalDates[_employee] <= i + MONTH
                 ) {
                     break;
                 }
@@ -178,22 +195,6 @@ contract Salaries is Ownable, ReentrancyGuard {
         }
 
         return (salaries[_employee] * monthsCount, monthsCount);
-    }
-
-    /**
-     * Initializes the contract
-     * @param _tokenAddress The address of the token contract.
-     * @param _liquidityProviderAddress The address for the Liquidity Provider
-     */
-    function initializeContract(
-        address _owner,
-        address _tokenAddress, // 0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea DAI Rinkeby
-        address _liquidityProviderAddress
-    ) external onlyOwner {
-        require(_tokenAddress.isContract(), "Not a contract address");
-        token = IERC20(_tokenAddress);
-        setLiquidityProviderAddress(_liquidityProviderAddress);
-        Ownable.transferOwnership(_owner);
     }
 
     /*

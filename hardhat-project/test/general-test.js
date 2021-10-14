@@ -467,13 +467,13 @@ describe("Salaries - TEST", () => {
     it("Should PASS remove of Addr8,  date should update", async () => {
       await salaries.connect(owner).removeEmployee(addr8.address);
 
-      const removalDate = await salaries
+      const removalDates = await salaries
         .connect(addr8)
-        .removalDate(addr8.address);
+        .removalDates(addr8.address);
 
       console.debug(
         "\t\t\tRemoval Date  :",
-        displayTime(Number(removalDate.toString()))
+        displayTime(Number(removalDates.toString()))
       );
     });
   });
@@ -542,6 +542,22 @@ describe("Salaries - TEST", () => {
       );
 
       expect(ownerDAIBalance.toString()).to.equal(final);
+    });
+
+    it("dates[addr8] should be 0", async () => {
+      const date = await salaries.connect(addr8).dates(addr8.address);
+      expect(date.toString()).to.equal("0");
+    });
+
+    it("removalDates[addr8] should be 0", async () => {
+      const date = await salaries.connect(addr8).removalDates(addr8.address);
+      expect(date.toString()).to.equal("0");
+    });
+
+    it("salaries[addr8] should be 0", async () => {
+      const salary = await salaries.connect(addr8).salaries(addr8.address);
+      console.debug("\t\t\tAddr8 can be hired again");
+      expect(salary.toString()).to.equal("0");
     });
   });
 });
