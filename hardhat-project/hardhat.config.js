@@ -39,6 +39,18 @@ module.exports = {
     coinmarketcap: COINMARKETCAP_API_KEY,
   },
 
+  networks: {
+    rinkeby: {
+      url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
+      accounts: [PRIVATE_KEY],
+    },
+
+    "arbitrum-rinkeby": {
+      url: `https://arbitrum-rinkeby.infura.io/v3/${INFURA_API_KEY}`,
+      accounts: [PRIVATE_KEY],
+    },
+  },
+
   // to deploy
   // networks: {
   //   rinkeby: {
