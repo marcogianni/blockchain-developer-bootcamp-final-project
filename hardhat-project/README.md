@@ -99,7 +99,8 @@ PROXY_ADDRESS=""                # Used by scripts/upgrade.js
 
 
 ## ⚓ NFT certification
+
+Is it possible to have a version for LinkedIn too? Here my address.
 ```
 0x2176f4b766CD63C4b59CfDeb7d8A599A7Ae5F569
 ```
-
