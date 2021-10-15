@@ -42,7 +42,33 @@ PROXY_ADDRESS=""
 
 ---
 
-## 📖 NOTES
 
-I used OpenZeppelin tooling to easily and securely deploy an upgradeable contract using the UUPS proxy pattern.
+
+
+## 📐 DESIGN PATTERNS
+
+- Inheritance and Interfaces
+  - IERC20 from `@openzeppelin/contracts/token/ERC20/IERC20.sol`
+- Access Control Design Patterns
+  - Ownable from `@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol`
+- Upgradable Contracts
+  - UUPS from `@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol`
+
+
+## 🔒 Protect against attack vectors and Solidity Pitfalls
+
+- Using Specific Compiler Pragma (0.8.4)
+- Proper Use of Require, Assert and Revert 
+- Use Modifiers Only for Validation 
+- Checks-Effects-Interactions (Avoiding state changes after external calls)
+- Re-entrancy
+- Timestamp Dependence: I use block timestamps but the calculation interval is 30 days
+
+## 🔐 Security
+
+- SafeMath to avoid Integer Over/Underflow (SWC-101)
+- Avoid txOrigin attack (SWC-115)
+- Using new Solidity (SWC-102)
+
+
 
