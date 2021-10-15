@@ -1,7 +1,7 @@
 # Hardhat Project
 
 
-## USAGE
+## Usage
 
 The project contains `.nvmrc` file with node version to use. Please run:
 ```
@@ -13,7 +13,7 @@ Then run:
 npm install
 ```
 
-### 🧪 RUN TESTS
+### 🧪 Run tests
 Should pass all 38 tests, run with:
 
 ```
@@ -50,7 +50,7 @@ State variable can't change, upgrade script allows only to update functions or a
 
 
 ---
-### 🔑 ENV
+### 🔑 ENV FILE
 
 Create an `.env` file on project root. Here the path:
 ```
@@ -72,7 +72,7 @@ PROXY_ADDRESS=""                # Used by scripts/upgrade.js
 ---
 
 
-## 📐 DESIGN PATTERNS
+## 📐 Design Patterns
 
 - Inheritance and Interfaces
   - IERC20 from `@openzeppelin/contracts/token/ERC20/IERC20.sol`
