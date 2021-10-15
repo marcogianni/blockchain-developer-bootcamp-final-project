@@ -28,7 +28,9 @@ Check `TOKEN_ADDRESS` (DAI Rinkeby) in the deploy script and then:
 npx hardhat run scripts/deploy.js
 ```
 **WARNING: You should set an address of an ERC20 Token with 18 decimals (default ERC20)**.
-I used DAI in Rinkeby network, to get DAI use [Compound](https://app.compound.finance/).
+I used DAI in Rinkeby network, to get DAI use [Compound](https://app.compound.finance/). You can only request 100 DAI at a time.
+
+In my tests I deployed a token called DAI, this allowed me to have a large availability of tokens to be sent to the liquidity provider address.
 
 
 By default script uses default hardhat network. To choose network run with:
@@ -50,7 +52,7 @@ State variable can't change, upgrade script allows only to update functions or a
 ---
 ### 🔑 ENV
 
-Create an `.env` file on project root. Here the path
+Create an `.env` file on project root. Here the path:
 ```
 blockchain-developer-bootcamp-final-project/hardhat-project/.env
 ```
@@ -59,7 +61,7 @@ The env file shoud contain:
 ```
 ETHERSCAN_API_KEY=""            # used by hardhat-gas-reporter
 COINMARKETCAP_API_KEY=""        # used by hardhat-gas-reporter
-# to ignore remove require("hardhat-gas-reporter") in hardhat.config.js
+# to ignore remove require("hardhat-gas-reporter") in hardhat.config.js, etherscan and gasReport from module.export
 
 PRIVATE_KEY=""                  # used to deploy
 INFURA_API_KEY=""               # used to deploy
