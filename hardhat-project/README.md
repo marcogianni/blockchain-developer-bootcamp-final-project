@@ -23,7 +23,7 @@ npx hardhat test
 ---
 ### ➡️ DEPLOY
 
-Check `TOKEN_ADDRESS` (DAI Rinkeby) in the deploy script and then:
+Check `TOKEN_ADDRESS` (DAI Rinkeby) in `/scripts/deploy.js` and then:
 ```
 npx hardhat run scripts/deploy.js
 ```
@@ -39,7 +39,7 @@ npx hardhat run scripts/deploy.js --network rinkeby
 ```
 ---
 ### ↩️ UPGRADE
-Remember to add the `PROXY_ADDRESS` and then:
+Remember to add the `PROXY_ADDRESS` in `.env` and then:
 
 ```
 npx hardhat run scripts/upgrade.js
