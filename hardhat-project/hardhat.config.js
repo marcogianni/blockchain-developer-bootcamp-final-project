@@ -46,18 +46,5 @@ module.exports = {
       url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
       accounts: [PRIVATE_KEY],
     },
-
-    "arbitrum-rinkeby": {
-      url: `https://arbitrum-rinkeby.infura.io/v3/${INFURA_API_KEY}`,
-      accounts: [PRIVATE_KEY],
-    },
   },
-
-  // to deploy
-  // networks: {
-  //   rinkeby: {
-  //     url: "", //Infura url with projectId
-  //     accounts: [""], // add the account that will deploy the contract (private key)
-  //   },
-  // },
 };

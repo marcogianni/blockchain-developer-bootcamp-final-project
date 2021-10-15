@@ -2,10 +2,9 @@ const { expect } = require("chai");
 const { BigNumber } = require("ethers");
 const { time } = require("@openzeppelin/test-helpers");
 
-const MONTH = 2592000;
 const DAY = 86400;
 
-const displayTime = (unixTime) => {
+const displayTime = unixTime => {
   var date = new Date(unixTime * 1000).toLocaleString("it-IT");
   return date;
 };
@@ -50,15 +49,9 @@ describe("Salaries - TEST", () => {
       currentBlock = await time.latest();
       const currentBlockNumber = await time.latestBlock();
 
-      console.debug(
-        "\t\t\tCurrent Block Number",
-        currentBlockNumber.toString()
-      );
+      console.debug("\t\t\tCurrent Block Number", currentBlockNumber.toString());
       console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
-      console.debug(
-        "\t\t\tCurrent Block Time",
-        displayTime(Number(currentBlock.toString()))
-      );
+      console.debug("\t\t\tCurrent Block Time", displayTime(Number(currentBlock.toString())));
     });
   });
 
@@ -77,16 +70,10 @@ describe("Salaries - TEST", () => {
 
     it("Owner should own Total Supply", async () => {
       const ownerDAIBalance = await daiToken.balanceOf(owner.address);
-      console.debug(
-        "\t\t\tOWNER DAI Balance:",
-        `${ownerDAIBalance.toString()}`
-      );
+      console.debug("\t\t\tOWNER DAI Balance:", `${ownerDAIBalance.toString()}`);
 
       initialTotalSupply = await daiToken.totalSupply();
-      console.debug(
-        "\t\t\tInitial Total Supply:",
-        `${initialTotalSupply.toString()}`
-      );
+      console.debug("\t\t\tInitial Total Supply:", `${initialTotalSupply.toString()}`);
 
       expect(ownerDAIBalance.toString()).to.equal(initialTotalSupply);
     });
@@ -105,10 +92,7 @@ describe("Salaries - TEST", () => {
     it("Should test 'approve' and 'allowance' from the owner to first Comer", async () => {
       const amountForApproval = "1000000000000000000000";
       await daiToken.approve(salariesAddress, amountForApproval);
-      const allowance = await daiToken.allowance(
-        owner.address,
-        salariesAddress
-      );
+      const allowance = await daiToken.allowance(owner.address, salariesAddress);
       expect(allowance.toString()).to.equal(amountForApproval.toString());
     });
   });
@@ -116,29 +100,19 @@ describe("Salaries - TEST", () => {
   describe("Salaries Contract Fist Check", () => {
     it("Should initialize", async () => {
       await salaries.connect(owner).initialize(daiTokenAddress, addr18.address);
-      const liquidityProviderAddressParam =
-        await salaries.liquidityProviderAddressParam();
-      const liquidityProviderBalance = await daiToken.balanceOf(
-        liquidityProviderAddressParam.newValue
-      );
-      console.debug(
-        "\n\tLiquidity provider Address:",
-        liquidityProviderAddressParam.newValue
-      );
+      const liquidityProviderAddressParam = await salaries.liquidityProviderAddressParam();
+      const liquidityProviderBalance = await daiToken.balanceOf(liquidityProviderAddressParam.newValue);
+      console.debug("\n\tLiquidity provider Address:", liquidityProviderAddressParam.newValue);
       console.debug(
         "\tLiquidity provider Balance:",
-        ethers.utils.formatEther(liquidityProviderBalance.toString()) + " DAI"
+        ethers.utils.formatEther(liquidityProviderBalance.toString()) + " DAI",
       );
       expect(liquidityProviderAddressParam.newValue).to.equal(addr18.address);
     });
 
     it("Set Liquidity Provider Allowance (addr18) ", async () => {
-      await daiToken
-        .connect(addr18)
-        .approve(salariesAddress, "100000000000000000000000");
-      const allowance = await daiToken
-        .connect(addr18)
-        .allowance(addr18.address, salariesAddress);
+      await daiToken.connect(addr18).approve(salariesAddress, "100000000000000000000000");
+      const allowance = await daiToken.connect(addr18).allowance(addr18.address, salariesAddress);
       expect(allowance.toString()).to.equal("100000000000000000000000");
     });
 
@@ -150,9 +124,7 @@ describe("Salaries - TEST", () => {
 
   describe("Giving DAI to Liquidity Provider", () => {
     it("Liquidity Provider Address should own 100000 DAI", async () => {
-      await daiToken
-        .connect(owner)
-        .transfer(addr18.address, "100000000000000000000000");
+      await daiToken.connect(owner).transfer(addr18.address, "100000000000000000000000");
       const addrOVRBalance = await daiToken.balanceOf(addr18.address);
       expect(addrOVRBalance.toString()).to.equal("100000000000000000000000");
     });
@@ -163,9 +135,7 @@ describe("Salaries - TEST", () => {
       const salary = "500000000000000000000";
       await salaries.connect(owner).addEmployee(addr1.address, salary);
 
-      const employeeSalary = await salaries
-        .connect(addr1)
-        .salaries(addr1.address);
+      const employeeSalary = await salaries.connect(addr1).salaries(addr1.address);
 
       const date = await salaries.connect(addr1).dates(addr1.address);
       console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
@@ -177,9 +147,7 @@ describe("Salaries - TEST", () => {
       const salary = "300000000000000000000";
       await salaries.connect(owner).addEmployee(addr2.address, salary);
 
-      const employeeSalary = await salaries
-        .connect(addr2)
-        .salaries(addr2.address);
+      const employeeSalary = await salaries.connect(addr2).salaries(addr2.address);
 
       const date = await salaries.connect(addr2).dates(addr2.address);
       console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
@@ -191,9 +159,7 @@ describe("Salaries - TEST", () => {
       const salary = "700000000000000000000";
       await salaries.connect(owner).addEmployee(addr3.address, salary);
 
-      const employeeSalary = await salaries
-        .connect(addr3)
-        .salaries(addr3.address);
+      const employeeSalary = await salaries.connect(addr3).salaries(addr3.address);
 
       const date = await salaries.connect(addr3).dates(addr3.address);
       console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
@@ -205,9 +171,7 @@ describe("Salaries - TEST", () => {
       const salary = "200000000000000000000";
       await salaries.connect(owner).addEmployee(addr4.address, salary);
 
-      const employeeSalary = await salaries
-        .connect(addr4)
-        .salaries(addr4.address);
+      const employeeSalary = await salaries.connect(addr4).salaries(addr4.address);
 
       const date = await salaries.connect(addr4).dates(addr4.address);
       console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
@@ -219,9 +183,7 @@ describe("Salaries - TEST", () => {
       const salary = "700000000000000000000";
       await salaries.connect(owner).addEmployee(addr5.address, salary);
 
-      const employeeSalary = await salaries
-        .connect(addr5)
-        .salaries(addr5.address);
+      const employeeSalary = await salaries.connect(addr5).salaries(addr5.address);
 
       const date = await salaries.connect(addr5).dates(addr5.address);
       console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
@@ -233,9 +195,7 @@ describe("Salaries - TEST", () => {
       const salary = "900000000000000000000";
       await salaries.connect(owner).addEmployee(addr6.address, salary);
 
-      const employeeSalary = await salaries
-        .connect(addr6)
-        .salaries(addr6.address);
+      const employeeSalary = await salaries.connect(addr6).salaries(addr6.address);
 
       const date = await salaries.connect(addr6).dates(addr6.address);
       console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
@@ -245,32 +205,28 @@ describe("Salaries - TEST", () => {
 
     it("Should FAIL the addEmployee function called by the Addr7, ONLY OWNER", async () => {
       const salary = "1000000000000000000000";
-      await expect(
-        salaries.connect(addr7).addEmployee(addr7.address, salary)
-      ).to.be.revertedWith("Ownable: caller is not the owner");
+      await expect(salaries.connect(addr7).addEmployee(addr7.address, salary)).to.be.revertedWith(
+        "Ownable: caller is not the owner",
+      );
     });
 
     it("Should FAIL the addEmployee function called by the owner to add Addr1 salary, Addr1 already receives a salary", async () => {
       const salary = "1000000000000000000000";
-      await expect(
-        salaries.connect(owner).addEmployee(addr1.address, salary)
-      ).to.be.revertedWith("Already has a salary");
+      await expect(salaries.connect(owner).addEmployee(addr1.address, salary)).to.be.revertedWith(
+        "Already has a salary",
+      );
     });
 
     it("Should FAIL the removeEmployee function called by the owner for user that han not a salary", async () => {
       const salary = "1000000000000000000000";
-      await expect(
-        salaries.connect(owner).removeEmployee(addr17.address)
-      ).to.be.revertedWith("Not an employee");
+      await expect(salaries.connect(owner).removeEmployee(addr17.address)).to.be.revertedWith("Not an employee");
     });
 
     it("500 DAI per month for Addr8", async () => {
       const salary = "500000000000000000000";
       await salaries.connect(owner).addEmployee(addr8.address, salary);
 
-      const employeeSalary = await salaries
-        .connect(addr8)
-        .salaries(addr8.address);
+      const employeeSalary = await salaries.connect(addr8).salaries(addr8.address);
 
       const date = await salaries.connect(addr8).dates(addr8.address);
       console.debug("\t\t\tDate:", displayTime(Number(date.toString())));
@@ -288,23 +244,15 @@ describe("Salaries - TEST", () => {
       currentBlock = await time.latest();
       const currentBlockNumber = await time.latestBlock();
 
-      console.debug(
-        "\t\t\tCurrent Block Number",
-        currentBlockNumber.toString()
-      );
+      console.debug("\t\t\tCurrent Block Number", currentBlockNumber.toString());
       console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
-      console.debug(
-        "\t\t\tCurrent Block Time",
-        displayTime(Number(currentBlock.toString()))
-      );
+      console.debug("\t\t\tCurrent Block Time", displayTime(Number(currentBlock.toString())));
     });
   });
 
   describe("Withdrawals", () => {
     it("Should FAIL withdraw Addr1", async () => {
-      await expect(salaries.connect(addr1).withdraw()).to.be.revertedWith(
-        "Too early"
-      );
+      await expect(salaries.connect(addr1).withdraw()).to.be.revertedWith("Too early");
     });
   });
 
@@ -317,15 +265,9 @@ describe("Salaries - TEST", () => {
       currentBlock = await time.latest();
       const currentBlockNumber = await time.latestBlock();
 
-      console.debug(
-        "\t\t\tCurrent Block Number",
-        currentBlockNumber.toString()
-      );
+      console.debug("\t\t\tCurrent Block Number", currentBlockNumber.toString());
       console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
-      console.debug(
-        "\t\t\tCurrent Block Time",
-        displayTime(Number(currentBlock.toString()))
-      );
+      console.debug("\t\t\tCurrent Block Time", displayTime(Number(currentBlock.toString())));
     });
   });
 
@@ -335,18 +277,12 @@ describe("Salaries - TEST", () => {
 
       const date = await salaries.connect(addr1).dates(addr1.address);
 
-      console.debug(
-        "\t\t\tWithdrawal Date  :",
-        displayTime(Number(date.toString()))
-      );
+      console.debug("\t\t\tWithdrawal Date  :", displayTime(Number(date.toString())));
 
       const salary = "500000000000000000000";
 
       const ownerDAIBalance = await daiToken.balanceOf(addr1.address);
-      console.debug(
-        "\t\t\tAddr1 DAI Balance:",
-        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
-      );
+      console.debug("\t\t\tAddr1 DAI Balance:", `${ethers.utils.formatEther(ownerDAIBalance).toString()}`);
 
       expect(ownerDAIBalance.toString()).to.equal(salary);
     });
@@ -361,15 +297,9 @@ describe("Salaries - TEST", () => {
       currentBlock = await time.latest();
       const currentBlockNumber = await time.latestBlock();
 
-      console.debug(
-        "\t\t\tCurrent Block Number",
-        currentBlockNumber.toString()
-      );
+      console.debug("\t\t\tCurrent Block Number", currentBlockNumber.toString());
       console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
-      console.debug(
-        "\t\t\tCurrent Block Time",
-        displayTime(Number(currentBlock.toString()))
-      );
+      console.debug("\t\t\tCurrent Block Time", displayTime(Number(currentBlock.toString())));
     });
   });
 
@@ -379,18 +309,12 @@ describe("Salaries - TEST", () => {
 
       const date = await salaries.connect(addr2).dates(addr2.address);
 
-      console.debug(
-        "\t\t\tWithdrawal Date  :",
-        displayTime(Number(date.toString()))
-      );
+      console.debug("\t\t\tWithdrawal Date  :", displayTime(Number(date.toString())));
 
       const final = "600000000000000000000";
 
       const ownerDAIBalance = await daiToken.balanceOf(addr2.address);
-      console.debug(
-        "\t\t\tAddr2 DAI Balance:",
-        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
-      );
+      console.debug("\t\t\tAddr2 DAI Balance:", `${ethers.utils.formatEther(ownerDAIBalance).toString()}`);
 
       expect(ownerDAIBalance.toString()).to.equal(final);
     });
@@ -405,15 +329,9 @@ describe("Salaries - TEST", () => {
       currentBlock = await time.latest();
       const currentBlockNumber = await time.latestBlock();
 
-      console.debug(
-        "\t\t\tCurrent Block Number",
-        currentBlockNumber.toString()
-      );
+      console.debug("\t\t\tCurrent Block Number", currentBlockNumber.toString());
       console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
-      console.debug(
-        "\t\t\tCurrent Block Time",
-        displayTime(Number(currentBlock.toString()))
-      );
+      console.debug("\t\t\tCurrent Block Time", displayTime(Number(currentBlock.toString())));
     });
   });
 
@@ -423,18 +341,12 @@ describe("Salaries - TEST", () => {
 
       const date = await salaries.connect(addr3).dates(addr3.address);
 
-      console.debug(
-        "\t\t\tWithdrawal Date  :",
-        displayTime(Number(date.toString()))
-      );
+      console.debug("\t\t\tWithdrawal Date  :", displayTime(Number(date.toString())));
 
       const final = "2100000000000000000000";
 
       const ownerDAIBalance = await daiToken.balanceOf(addr3.address);
-      console.debug(
-        "\t\t\tAddr3 DAI Balance:",
-        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
-      );
+      console.debug("\t\t\tAddr3 DAI Balance:", `${ethers.utils.formatEther(ownerDAIBalance).toString()}`);
 
       expect(ownerDAIBalance.toString()).to.equal(final);
     });
@@ -449,15 +361,9 @@ describe("Salaries - TEST", () => {
       currentBlock = await time.latest();
       const currentBlockNumber = await time.latestBlock();
 
-      console.debug(
-        "\t\t\tCurrent Block Number",
-        currentBlockNumber.toString()
-      );
+      console.debug("\t\t\tCurrent Block Number", currentBlockNumber.toString());
       console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
-      console.debug(
-        "\t\t\tCurrent Block Time",
-        displayTime(Number(currentBlock.toString()))
-      );
+      console.debug("\t\t\tCurrent Block Time", displayTime(Number(currentBlock.toString())));
     });
   });
 
@@ -465,14 +371,9 @@ describe("Salaries - TEST", () => {
     it("Should PASS remove of Addr8,  date should update", async () => {
       await salaries.connect(owner).removeEmployee(addr8.address);
 
-      const removalDates = await salaries
-        .connect(addr8)
-        .removalDates(addr8.address);
+      const removalDates = await salaries.connect(addr8).removalDates(addr8.address);
 
-      console.debug(
-        "\t\t\tRemoval Date  :",
-        displayTime(Number(removalDates.toString()))
-      );
+      console.debug("\t\t\tRemoval Date  :", displayTime(Number(removalDates.toString())));
     });
   });
 
@@ -482,18 +383,12 @@ describe("Salaries - TEST", () => {
 
       const date = await salaries.connect(addr4).dates(addr4.address);
 
-      console.debug(
-        "\t\t\tWithdrawal Date  :",
-        displayTime(Number(date.toString()))
-      );
+      console.debug("\t\t\tWithdrawal Date  :", displayTime(Number(date.toString())));
 
       const final = "600000000000000000000";
 
       const ownerDAIBalance = await daiToken.balanceOf(addr4.address);
-      console.debug(
-        "\t\t\tAddr4 DAI Balance:",
-        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
-      );
+      console.debug("\t\t\tAddr4 DAI Balance:", `${ethers.utils.formatEther(ownerDAIBalance).toString()}`);
 
       expect(ownerDAIBalance.toString()).to.equal(final);
     });
@@ -508,15 +403,9 @@ describe("Salaries - TEST", () => {
       currentBlock = await time.latest();
       const currentBlockNumber = await time.latestBlock();
 
-      console.debug(
-        "\t\t\tCurrent Block Number",
-        currentBlockNumber.toString()
-      );
+      console.debug("\t\t\tCurrent Block Number", currentBlockNumber.toString());
       console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
-      console.debug(
-        "\t\t\tCurrent Block Time",
-        displayTime(Number(currentBlock.toString()))
-      );
+      console.debug("\t\t\tCurrent Block Time", displayTime(Number(currentBlock.toString())));
     });
   });
 
@@ -526,18 +415,12 @@ describe("Salaries - TEST", () => {
 
       const date = await salaries.connect(addr8).dates(addr8.address);
 
-      console.debug(
-        "\t\t\tWithdrawal Date  :",
-        displayTime(Number(date.toString()))
-      );
+      console.debug("\t\t\tWithdrawal Date  :", displayTime(Number(date.toString())));
 
       const final = "1500000000000000000000";
 
       const ownerDAIBalance = await daiToken.balanceOf(addr8.address);
-      console.debug(
-        "\t\t\tAddr8 DAI Balance:",
-        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
-      );
+      console.debug("\t\t\tAddr8 DAI Balance:", `${ethers.utils.formatEther(ownerDAIBalance).toString()}`);
 
       expect(ownerDAIBalance.toString()).to.equal(final);
     });
@@ -565,18 +448,12 @@ describe("Salaries - TEST", () => {
 
       const date = await salaries.connect(addr4).dates(addr4.address);
 
-      console.debug(
-        "\t\t\tWithdrawal Date  :",
-        displayTime(Number(date.toString()))
-      );
+      console.debug("\t\t\tWithdrawal Date  :", displayTime(Number(date.toString())));
 
       const final = "1200000000000000000000";
 
       const ownerDAIBalance = await daiToken.balanceOf(addr4.address);
-      console.debug(
-        "\t\t\tAddr4 DAI Balance:",
-        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
-      );
+      console.debug("\t\t\tAddr4 DAI Balance:", `${ethers.utils.formatEther(ownerDAIBalance).toString()}`);
 
       expect(ownerDAIBalance.toString()).to.equal(final);
     });
@@ -591,15 +468,9 @@ describe("Salaries - TEST", () => {
       currentBlock = await time.latest();
       const currentBlockNumber = await time.latestBlock();
 
-      console.debug(
-        "\t\t\tCurrent Block Number",
-        currentBlockNumber.toString()
-      );
+      console.debug("\t\t\tCurrent Block Number", currentBlockNumber.toString());
       console.debug("\t\t\tCurrent Block Timestamp", currentBlock.toString());
-      console.debug(
-        "\t\t\tCurrent Block Time",
-        displayTime(Number(currentBlock.toString()))
-      );
+      console.debug("\t\t\tCurrent Block Time", displayTime(Number(currentBlock.toString())));
     });
   });
 
@@ -609,18 +480,12 @@ describe("Salaries - TEST", () => {
 
       const date = await salaries.connect(addr4).dates(addr4.address);
 
-      console.debug(
-        "\t\t\tWithdrawal Date  :",
-        displayTime(Number(date.toString()))
-      );
+      console.debug("\t\t\tWithdrawal Date  :", displayTime(Number(date.toString())));
 
       const final = "1600000000000000000000";
 
       const ownerDAIBalance = await daiToken.balanceOf(addr4.address);
-      console.debug(
-        "\t\t\tAddr4 DAI Balance:",
-        `${ethers.utils.formatEther(ownerDAIBalance).toString()}`
-      );
+      console.debug("\t\t\tAddr4 DAI Balance:", `${ethers.utils.formatEther(ownerDAIBalance).toString()}`);
 
       expect(ownerDAIBalance.toString()).to.equal(final);
     });
