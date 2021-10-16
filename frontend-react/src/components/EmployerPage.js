@@ -1,26 +1,14 @@
 import React, { useEffect } from "react";
 
-import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 import { useWeb3React } from "@web3-react/core";
 import { infoNotification } from "notifications";
-
-import { DisplayPublicAddress } from "components";
-
-const Item = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
-  textAlign: "left",
-}));
 
 const EmployerPage = () => {
   const { account } = useWeb3React();
