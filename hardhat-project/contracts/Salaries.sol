@@ -131,7 +131,6 @@ contract Salaries is
     function removeEmployee(address _employee) public onlyOwner whenNotPaused {
         require(salaries[_employee] != 0, "Not an employee");
         removalDates[_employee] = _now();
-        totalEmployees -= 1;
     }
 
     function withdraw() public receivesASalary(msg.sender) whenNotPaused {
@@ -153,24 +152,27 @@ contract Salaries is
             dates[_employee] = 0;
             removalDates[_employee] = 0;
             salaries[_employee] = 0;
+            totalEmployees -= 1;
         }
 
-        require(
-            token.transferFrom(
-                liquidityProviderAddress(),
-                _employee,
-                finalBalanceToWithdraw
-            ),
-            "Transfer failed"
-        );
+        if (finalBalanceToWithdraw != 0) {
+            require(
+                token.transferFrom(
+                    liquidityProviderAddress(),
+                    _employee,
+                    finalBalanceToWithdraw
+                ),
+                "Transfer failed"
+            );
 
-        emit SalaryWithdrawal(
-            _employee,
-            finalBalanceToWithdraw,
-            monthsCount,
-            _now(),
-            dates[_employee]
-        );
+            emit SalaryWithdrawal(
+                _employee,
+                finalBalanceToWithdraw,
+                monthsCount,
+                _now(),
+                dates[_employee]
+            );
+        }  
     }
 
     /**
@@ -201,13 +203,19 @@ contract Salaries is
 
         uint256 monthsCount;
 
+        /**
+         * @dev 
+         * NOTE: If the employer adds an employee on day 0 and after 10 days (less than 30 days) 
+         * decides to fire him, the withdraw transaction passes but the employee does not receive the 
+         * salary as expected.
+         */
         for (uint256 i = dates[_employee]; i <= _now(); i = i + MONTH) {
-            if (_now() >= i + MONTH) {
+            if (_now() > i + MONTH) {
                 // If a salary removal date has been scheduled and the date
                 // is in the 30-day range, do not add to the count.
                 if (
                     removalDates[_employee] != 0 &&
-                    removalDates[_employee] <= i + MONTH
+                    removalDates[_employee] < i + MONTH
                 ) {
                     break;
                 }
