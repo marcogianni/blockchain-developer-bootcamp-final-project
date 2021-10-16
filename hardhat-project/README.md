@@ -1,5 +1,18 @@
 # Hardhat Project
 
+## Description
+
+The Salaries smart contract allows the employer, to associate a monthly salary with each employee. 
+
+Once the employer has deployed the contract, it must call the `initialize` function, which allows it to define the ERC20 token (18 decimals) to be used for salaries, and the liquidity provider (one of its addresses probably) that must own that ERC20 token.
+
+*Note: Liquidity Provider must `approve` contract.
+
+Once the configuration is complete, the employer can associate a monthly salary with their employees, using `addEmployee` method.
+
+After the 30 days of employment, the employee may withdraw. The employee may also choose not to withdraw pay immediately, but may do so after a longer period of time instead of every month.
+
+If an employee who is terminated has not withdrawn pay for the last several months, he or she may still withdraw up to the last 30-day range that does not contain the date of termination.
 
 ## Usage
 
