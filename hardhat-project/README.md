@@ -39,14 +39,15 @@ npx hardhat run scripts/deploy.js --network rinkeby
 ```
 ---
 ### ↩️ UPGRADE
-Remember to add the `PROXY_ADDRESS` in `.env` and then:
+Remember to add the `PROXY_ADDRESS` in `/scripts/upgrade.js` and then:
 
 ```
 npx hardhat run scripts/upgrade.js
 ```
 
 State variable can't change, upgrade script allows only to update functions or add new state variables.
-(If I had time before November 30, I would use this script to add the employee salary update functionality to the Salaries smart contract).
+
+*(If I had time before November 30, I would use this script to add the employee salary update functionality to the Salaries smart contract).
 
 
 ---
@@ -66,7 +67,6 @@ COINMARKETCAP_API_KEY=""        # used by hardhat-gas-reporter
 PRIVATE_KEY=""                  # used to deploy
 INFURA_API_KEY=""               # used to deploy
 LIQUIDY_PROVIDER_ADDRESS=""     # employees receive their salary thanks to this address
-PROXY_ADDRESS=""                # Used by scripts/upgrade.js
 ```
 
 ---

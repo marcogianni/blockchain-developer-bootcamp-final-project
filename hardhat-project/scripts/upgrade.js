@@ -1,6 +1,6 @@
 const { ethers, upgrades } = require("hardhat");
 
-const PROXY_ADDRESS = process.env.PROXY_ADDRESS; //the ERC1967Proxy
+const PROXY_ADDRESS = ""; //the ERC1967Proxy
 
 async function main() {
   // Upgrading
