@@ -10,6 +10,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "react-toastify/dist/ReactToastify.css";
 
+import { Layout, Navbar } from "components";
 import Front from "./Front";
 
 function getLibrary(provider) {
@@ -36,7 +37,10 @@ function App() {
         draggable
       />
       <ThemeProvider theme={theme}>
-        <Front />
+        <Navbar />
+        <Layout>
+          <Front />
+        </Layout>
       </ThemeProvider>
     </Web3ReactProvider>
   );

@@ -1,64 +1,69 @@
-import React from "react";
+import React, { useEffect } from "react";
+
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 import { useWeb3React } from "@web3-react/core";
-
-import Button from "@mui/material/Button";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { infoNotification } from "notifications";
 
 import { DisplayPublicAddress } from "components";
 
-const HomePage = () => {
-  const { deactivate, account } = useWeb3React();
+const Item = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  textAlign: "left",
+}));
 
-  async function disconnect() {
-    try {
-      deactivate();
-    } catch (ex) {
-      console.log(ex);
-    }
-  }
+const EmployerPage = () => {
+  const { account } = useWeb3React();
+
+  useEffect(() => {
+    infoNotification("Account changed");
+  }, [account]);
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1 }}
-            >
-              Hi Employer
-            </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6">Total employees</Typography>
+              <Typography variant="h4">28</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6">Liquidity Provider Balance</Typography>
+              <Typography variant="h4">10,000 DAI</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={4}></Grid>
+        <Grid item xs={4}></Grid>
+      </Grid>
+      <div style={{ position: "fixed", left: 20, bottom: 20 }}>
+        <Fab variant="extended" color="primary">
+          <AddIcon sx={{ mr: 1 }} />
+          Add Employee
+        </Fab>
 
-            <DisplayPublicAddress address={account} />
-
-            <Tooltip
-              enterTouchDelay={300}
-              placement="bottom"
-              title={"Disconnect"}
-              arrow
-            >
-              <Button
-                size="large"
-                color="warning"
-                variant="contained"
-                style={{ marginLeft: 10 }}
-              >
-                <LogoutIcon onClick={disconnect} />
-              </Button>
-            </Tooltip>
-          </Toolbar>
-        </AppBar>
-      </Box>
+        <Fab variant="extended" color="secondary" style={{ marginLeft: 10 }}>
+          <AddIcon sx={{ mr: 1 }} />
+          Remove Employee
+        </Fab>
+      </div>
     </>
   );
 };
 
-export default HomePage;
+export default EmployerPage;

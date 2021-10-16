@@ -3,7 +3,7 @@ import * as R from "ramda";
 import { useWeb3React } from "@web3-react/core";
 
 import { ConnectPage, EmployerPage } from "components";
-import { warningNotification, infoNotification } from "notifications";
+import { warningNotification } from "notifications";
 
 const Front = () => {
   const { active, account, chainId, library, connector } = useWeb3React();
@@ -14,10 +14,6 @@ const Front = () => {
       warningNotification("Please connect to Rinkeby Network");
     }
   }, [chainId]);
-
-  useEffect(() => {
-    infoNotification("Account changed");
-  }, [account]);
 
   if (!active) {
     return <ConnectPage />;
