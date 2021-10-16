@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { ToastContainer } from "react-toastify";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Web3ReactProvider } from "@web3-react/core";
@@ -18,13 +17,11 @@ function getLibrary(provider) {
 }
 
 function App() {
-  const theme = useMemo(() =>
-    createTheme({
-      palette: {
-        mode: "dark",
-      },
-    })
-  );
+  const theme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
 
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
