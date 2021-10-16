@@ -16,12 +16,7 @@ import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 // Interfaces
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract Salaries is
-    UUPSUpgradeable,
-    OwnableUpgradeable,
-    ReentrancyGuardUpgradeable,
-    PausableUpgradeable
-{
+contract Salaries is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable {
     using AddressUpgradeable for address;
     using SafeMath for uint256;
 
@@ -113,11 +108,7 @@ contract Salaries is
      * Only the owner can call this function.
      * The employee must already receive a salary.
      */
-    function addEmployee(address _employee, uint256 _salary)
-        public
-        onlyOwner
-        whenNotPaused
-    {
+    function addEmployee(address _employee, uint256 _salary) public onlyOwner whenNotPaused {
         require(salaries[_employee] == 0, "Already has a salary");
         salaries[_employee] = _salary;
         dates[_employee] = _now();
@@ -141,10 +132,7 @@ contract Salaries is
     }
 
     function _withdraw(address _employee) internal nonReentrant {
-        (
-            uint256 finalBalanceToWithdraw,
-            uint256 monthsCount
-        ) = calculateWithdrawal(_employee);
+        (uint256 finalBalanceToWithdraw, uint256 monthsCount) = calculateWithdrawal(_employee);
 
         if (removalDates[_employee] == 0) {
             dates[_employee] += (monthsCount * MONTH);
@@ -158,22 +146,12 @@ contract Salaries is
 
         if (finalBalanceToWithdraw != 0) {
             require(
-                token.transferFrom(
-                    liquidityProviderAddress(),
-                    _employee,
-                    finalBalanceToWithdraw
-                ),
+                token.transferFrom(liquidityProviderAddress(), _employee, finalBalanceToWithdraw),
                 "Transfer failed"
             );
 
-            emit SalaryWithdrawal(
-                _employee,
-                finalBalanceToWithdraw,
-                monthsCount,
-                _now(),
-                dates[_employee]
-            );
-        }  
+            emit SalaryWithdrawal(_employee, finalBalanceToWithdraw, monthsCount, _now(), dates[_employee]);
+        }
     }
 
     /**
@@ -192,11 +170,7 @@ contract Salaries is
      * @param _employee The employee address
      * @return amount to withdraw and months count
      */
-    function calculateWithdrawal(address _employee)
-        public
-        view
-        returns (uint256, uint256)
-    {
+    function calculateWithdrawal(address _employee) public view returns (uint256, uint256) {
         // If there is no start date, not an employee
         if (dates[_employee] == 0) {
             return (0, 0);
@@ -205,19 +179,16 @@ contract Salaries is
         uint256 monthsCount;
 
         /**
-         * @dev 
-         * NOTE: If the employer adds an employee on day 0 and after 10 days (less than 30 days) 
-         * decides to fire him, the withdraw transaction passes but the employee does not receive the 
+         * @dev
+         * NOTE: If the employer adds an employee on day 0 and after 10 days (less than 30 days)
+         * decides to fire him, the withdraw transaction passes but the employee does not receive the
          * salary as expected.
          */
         for (uint256 i = dates[_employee]; i <= _now(); i = i + MONTH) {
             if (_now() > i + MONTH) {
                 // If a salary removal date has been scheduled and the date
                 // is in the 30-day range, do not add to the count.
-                if (
-                    removalDates[_employee] != 0 &&
-                    removalDates[_employee] < i + MONTH
-                ) {
+                if (removalDates[_employee] != 0 && removalDates[_employee] < i + MONTH) {
                     break;
                 }
                 monthsCount++;
@@ -261,11 +232,7 @@ contract Salaries is
      * @param _paramTimestamp passed timestamp
      * @return Returns true if param update delay elapsed.
      */
-    function _paramUpdateDelayElapsed(uint256 _paramTimestamp)
-        internal
-        view
-        returns (bool)
-    {
+    function _paramUpdateDelayElapsed(uint256 _paramTimestamp) internal view returns (bool) {
         return _now() > _paramTimestamp.add(PARAM_UPDATE_DELAY);
     }
 
