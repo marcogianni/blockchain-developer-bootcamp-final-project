@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
+import * as R from "ramda";
 import { useWeb3React } from "@web3-react/core";
 
-import { ConnectPage, HomePage } from "components";
+import { ConnectPage, EmployerPage } from "components";
+
+import { warningNotification } from "notifications";
 
 const Front = () => {
-  const { active, account, library, connector, activate, deactivate } =
+  const { active, account, chainId, library, connector, activate, deactivate } =
     useWeb3React();
 
-  if (active) {
-    return <HomePage />;
+  useEffect(() => {
+    if (!R.isNil(chainId) && chainId !== 4) {
+      warningNotification("Please connect to Rinkeby Network");
+    }
+  }, [chainId]);
+
+  console.debug("FRONT", { connector, account, library, chainId });
+
+  if (!active) {
+    return <ConnectPage />;
   }
 
-  return <ConnectPage />;
+  return <EmployerPage />;
 };
 
 export default Front;

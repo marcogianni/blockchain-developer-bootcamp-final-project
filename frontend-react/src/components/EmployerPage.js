@@ -1,5 +1,4 @@
 import React from "react";
-import * as R from "ramda";
 
 import { useWeb3React } from "@web3-react/core";
 
@@ -29,8 +28,13 @@ const HomePage = () => {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Hi Davide.
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1 }}
+            >
+              Hi Employer
             </Typography>
 
             <DisplayPublicAddress address={account} />

@@ -3,7 +3,7 @@ import React from "react";
 const Metamask = ({ ...other }) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 189" {...other}>
-      <g fill="none" fill-rule="evenodd" fill="#CDBDB2">
+      <g fill="none" fillRule="evenodd" fill="#CDBDB2">
         <path
           fill="#CDBDB2"
           d="m60.75 173.25 27.563 7.313V171l2.25-2.25h15.75v19.125H89.438l-20.813-9z"

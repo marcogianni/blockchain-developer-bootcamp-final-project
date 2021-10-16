@@ -1,4 +1,5 @@
 import React from "react";
+import * as R from "ramda";
 import styled from "styled-components";
 import { useWeb3React } from "@web3-react/core";
 
@@ -10,7 +11,9 @@ import ConsenSys from "svg/ConsenSys";
 import { injected } from "components/connectors";
 
 const ConnectPage = () => {
-  const { activate } = useWeb3React();
+  const { activate, chainId } = useWeb3React();
+
+  console.debug("ConnectPage", { activate, chainId });
 
   async function connect() {
     try {
@@ -24,7 +27,7 @@ const ConnectPage = () => {
     <StyledConnectPage>
       <ConsenSys
         style={{
-          fill: "#1976d2",
+          fill: "#42a5f5",
           width: 200,
           position: "absolute",
           left: "50%",
@@ -57,7 +60,7 @@ const StyledConnectPage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #eaeef3;
+  background: #2f2f2f;
 
   .card {
     padding: 40px;

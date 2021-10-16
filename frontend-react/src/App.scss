@@ -1,0 +1,24 @@
+.notification-layout {
+  // color: white;
+  h4 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+.Toastify__toast--success {
+  background-color: #28b55e !important;
+}
+
+.Toastify__toast--error {
+  background-color: #c93939 !important;
+}
+
+.Toastify__toast--default {
+  background-color: white !important;
+}
