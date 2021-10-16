@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
@@ -46,7 +47,7 @@ const EmployerPage = () => {
         </Fab>
 
         <Fab variant="extended" color="secondary" style={{ marginLeft: 10 }}>
-          <AddIcon sx={{ mr: 1 }} />
+          <RemoveIcon sx={{ mr: 1 }} />
           Remove Employee
         </Fab>
       </div>
