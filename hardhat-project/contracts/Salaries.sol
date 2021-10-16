@@ -68,7 +68,8 @@ contract Salaries is
      */
     mapping(address => uint256) public salaries;
 
-    /*
+    /**
+     * @dev
      * This variable is used to track how much time has passed since the employee's last paycheck.
      * Each time the employee withdraws the entire sum, which can be for a month or cumulative for a period.
      * The employee can choose to withdraw every month, or whenever he wants as long as at least a month has passed.
