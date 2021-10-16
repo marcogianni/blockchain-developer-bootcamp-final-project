@@ -60,13 +60,13 @@ blockchain-developer-bootcamp-final-project/hardhat-project/.env
 
 The env file shoud contain:
 ```
-ETHERSCAN_API_KEY=""            # used by hardhat-gas-reporter
-COINMARKETCAP_API_KEY=""        # used by hardhat-gas-reporter
+ETHERSCAN_API_KEY=            # used by hardhat-gas-reporter
+COINMARKETCAP_API_KEY=        # used by hardhat-gas-reporter
 # to ignore remove require("hardhat-gas-reporter") in hardhat.config.js, etherscan and gasReport from module.export
 
-PRIVATE_KEY=""                  # used to deploy
-INFURA_API_KEY=""               # used to deploy
-LIQUIDY_PROVIDER_ADDRESS=""     # employees receive their salary thanks to this address
+PRIVATE_KEY=                  # used to deploy
+INFURA_API_KEY=               # used to deploy
+LIQUIDY_PROVIDER_ADDRESS=     # employees receive their salary thanks to this address
 ```
 
 ---
