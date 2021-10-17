@@ -1,15 +1,41 @@
 import React, { useEffect } from "react";
 
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
 import { useWeb3React } from "@web3-react/core";
 import { infoNotification } from "notifications";
+import { FabEmployer, HeaderEmployer } from "components";
+
+import { styled } from "@mui/material/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+
+const rows = [
+  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+  createData("Eclair", 262, 16.0, 24, 6.0),
+  createData("Cupcake", 305, 3.7, 67, 4.3),
+  createData("Gingerbread", 356, 16.0, 49, 3.9),
+  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+  createData("Eclair", 262, 16.0, 24, 6.0),
+  createData("Cupcake", 305, 3.7, 67, 4.3),
+  createData("Gingerbread", 356, 16.0, 49, 3.9),
+  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+  createData("Eclair", 262, 16.0, 24, 6.0),
+  createData("Cupcake", 305, 3.7, 67, 4.3),
+  createData("Gingerbread", 356, 16.0, 49, 3.9),
+];
 
 const EmployerPage = () => {
   const { account } = useWeb3React();
@@ -20,39 +46,71 @@ const EmployerPage = () => {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6">Total employees</Typography>
-              <Typography variant="h4">28</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6">Liquidity Provider Balance</Typography>
-              <Typography variant="h4">10,000 DAI</Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={4}></Grid>
-        <Grid item xs={4}></Grid>
-      </Grid>
-      <div style={{ position: "fixed", left: 20, bottom: 20 }}>
-        <Fab variant="extended" color="primary">
-          <AddIcon sx={{ mr: 1 }} />
-          Add Employee
-        </Fab>
+      <FabEmployer />
+      <HeaderEmployer totalEmployees={28} liquidityProviderBalance={"10,250"} />
+      <Typography
+        variant="h4"
+        style={{
+          marginTop: 40,
+          marginBottom: 20,
+          color: "white",
+          textTransform: "uppercase",
+          letterSpacing: 1,
+        }}
+      >
+        Latest employee withdrawals
+      </Typography>
 
-        <Fab variant="extended" color="secondary" style={{ marginLeft: 10 }}>
-          <RemoveIcon sx={{ mr: 1 }} />
-          Remove Employee
-        </Fab>
-      </div>
+      <TableContainer component={Paper} style={{ marginBottom: 100 }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>EMPLOYEE</StyledTableCell>
+              <StyledTableCell align="right">AMOUNT</StyledTableCell>
+              <StyledTableCell align="right">MONTH COUNT</StyledTableCell>
+              <StyledTableCell align="right">WITHDRAWAL DATE</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <StyledTableRow
+                key={row.name}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <StyledTableCell component="th" scope="row">
+                  {row.name}
+                </StyledTableCell>
+                <StyledTableCell align="right">{row.calories}</StyledTableCell>
+                <StyledTableCell align="right">{row.fat}</StyledTableCell>
+                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: "#2c2c2c",
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "theme.palette.common.black",
+    color: theme.palette.common.white,
+    fontSize: 17,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
 export default EmployerPage;

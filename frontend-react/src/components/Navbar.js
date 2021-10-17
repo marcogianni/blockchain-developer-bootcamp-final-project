@@ -1,5 +1,4 @@
 import React from "react";
-import * as R from "ramda";
 
 import { useWeb3React } from "@web3-react/core";
 
