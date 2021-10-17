@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Typography from "@mui/material/Typography";
 
@@ -11,17 +11,28 @@ import {
   TableEmployeeWithdrawals,
 } from "components";
 
-const EmployerPage = () => {
-  const { account } = useWeb3React();
+import { useSalaries } from "hooks/useSalaries";
 
-  useEffect(() => {
+const EmployerPage = () => {
+  const [state, setState] = useState({ totalEmployees: null });
+
+  const { account } = useWeb3React();
+  const { fetchTotalEmployees } = useSalaries();
+
+  useEffect(async () => {
     infoNotification("Account changed");
+    const total = await fetchTotalEmployees();
+    setState((s) => ({ ...s, totalEmployees: total }));
+    console.debug("TOTAL", total);
   }, [account]);
 
   return (
     <>
       <FabEmployer />
-      <HeaderEmployer totalEmployees={28} liquidityProviderBalance={"10,250"} />
+      <HeaderEmployer
+        totalEmployees={state.totalEmployees}
+        liquidityProviderBalance={"10,250"}
+      />
 
       <Divider
         style={{

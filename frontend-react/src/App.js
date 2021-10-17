@@ -2,6 +2,7 @@ import { ToastContainer } from "react-toastify";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Web3ReactProvider } from "@web3-react/core";
 import Web3 from "web3";
+import { ethers } from "ethers";
 
 import "./App.scss";
 import "@fontsource/roboto/300.css";
@@ -14,7 +15,7 @@ import { Layout, Navbar } from "components";
 import Front from "./Front";
 
 function getLibrary(provider) {
-  return new Web3(provider);
+  return new ethers.providers.Web3Provider(provider);
 }
 
 function App() {

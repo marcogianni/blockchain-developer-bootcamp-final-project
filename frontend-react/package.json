@@ -5,6 +5,9 @@
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
+    "@ethersproject/constants": "^5.4.0",
+    "@ethersproject/contracts": "^5.4.1",
+    "@ethersproject/units": "^5.4.0",
     "@fontsource/roboto": "^4.5.0",
     "@mui/icons-material": "^5.0.0",
     "@mui/material": "^5.0.0",
