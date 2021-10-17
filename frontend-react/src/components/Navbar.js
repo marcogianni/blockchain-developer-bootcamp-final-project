@@ -2,6 +2,8 @@ import React from "react";
 
 import { useWeb3React } from "@web3-react/core";
 
+import { address as ProxyContractAddress } from "contracts/SalariesProxy";
+
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -48,7 +50,7 @@ const Navbar = () => {
             </Typography>
 
             <DisplayPublicAddress
-              address={process.env.REACT_APP_CONTRACT_ADDRESS}
+              address={ProxyContractAddress}
               text="Smart Contract"
             />
 

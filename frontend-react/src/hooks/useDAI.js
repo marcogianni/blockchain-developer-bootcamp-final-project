@@ -16,7 +16,7 @@ export const useDAI = () => {
 
   const fetchAllowance = async (
     owner = process.env.REACT_APP_LIQUIDITY_PROVIDER_ADDRESS,
-    spender = process.env.REACT_APP_CONTRACT_ADDRESS
+    spender = ProxyContractAddress
   ) => {
     const allowance = await DAIContract.allowance(owner, spender);
     return formatUnits(allowance, 18);
