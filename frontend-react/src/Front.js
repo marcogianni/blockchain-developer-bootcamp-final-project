@@ -19,7 +19,11 @@ const Front = () => {
     return <ConnectPage />;
   }
 
-  return <EmployerPage />;
+  if (account === process.env.REACT_APP_EMPLOYER_ADDRESS) {
+    return <EmployerPage />;
+  }
+
+  return <ConnectPage />;
 };
 
 export default Front;

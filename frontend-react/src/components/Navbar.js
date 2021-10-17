@@ -25,6 +25,14 @@ const Navbar = () => {
 
   if (!active) return null;
 
+  const displayMessage = () => {
+    if (account === process.env.REACT_APP_EMPLOYER_ADDRESS) {
+      return "Hi Employer";
+    }
+
+    return "Not Authorized";
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -36,7 +44,7 @@ const Navbar = () => {
               component="div"
               sx={{ flexGrow: 1 }}
             >
-              Hi Employer
+              {displayMessage()}
             </Typography>
 
             <DisplayPublicAddress address={account} />
