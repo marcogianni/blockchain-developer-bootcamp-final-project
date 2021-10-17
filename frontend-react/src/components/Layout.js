@@ -7,7 +7,7 @@ const StyledContainer = styled(Container)`
 `;
 
 const Layout = ({ children }) => {
-  return <StyledContainer maxWidth="xl">{children}</StyledContainer>;
+  return <StyledContainer maxWidth="lg">{children}</StyledContainer>;
 };
 
 export default Layout;
