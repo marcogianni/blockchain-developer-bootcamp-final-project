@@ -1,16 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 
-import Typography from "@mui/material/Typography";
-
 import { useWeb3React } from "@web3-react/core";
-import Divider from "@mui/material/Divider";
 import { infoNotification } from "notifications";
 import {
   FabEmployer,
   HeaderEmployer,
   TableEmployeeWithdrawals,
 } from "components";
+import Typography from "@mui/material/Typography";
 
 import { useSalaries } from "hooks/useSalaries";
 import { useDAI } from "hooks/useDAI";
