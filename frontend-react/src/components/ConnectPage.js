@@ -38,11 +38,11 @@ const ConnectPage = () => {
       <Button
         variant="contained"
         size="large"
-        startIcon={<Metamask style={{ width: 30 }} />}
-        style={{ padding: "15px 30px" }}
+        startIcon={<Metamask style={{ width: 50, marginRight: 15 }} />}
+        style={{ padding: "15px 30px", fontSize: 18, fontWeight: "bold" }}
         onClick={connect}
       >
-        Connect to Metamask
+        Connect with Metamask
       </Button>
     </StyledConnectPage>
   );

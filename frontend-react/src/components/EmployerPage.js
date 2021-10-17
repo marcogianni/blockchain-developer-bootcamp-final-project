@@ -48,25 +48,23 @@ const EmployerPage = () => {
         liquidityProviderAllowance={state.liquidityProviderAllowance}
       />
 
-      <Divider
+      <Typography
+        variant="h4"
         style={{
+          color: "white",
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          textAlign: "left",
           marginTop: 50,
           marginBottom: 20,
+          display: "block",
+          fontWeight: "bold",
+          fontSize: 25,
         }}
+        component="span"
       >
-        <Typography
-          variant="h4"
-          style={{
-            color: "white",
-            textTransform: "uppercase",
-            letterSpacing: 1,
-            textAlign: "center",
-          }}
-          component="span"
-        >
-          Latest employee withdrawals
-        </Typography>
-      </Divider>
+        Latest employee withdrawals
+      </Typography>
 
       <TableEmployeeWithdrawals />
     </>
