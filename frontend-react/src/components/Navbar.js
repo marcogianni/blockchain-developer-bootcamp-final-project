@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useEffect } from "react";
 
 import { useWeb3React } from "@web3-react/core";
 
@@ -11,11 +12,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 import { DisplayPublicAddress } from "components";
 
+import { useSalaries } from "hooks/useSalaries";
+
 const Navbar = () => {
   const { deactivate, account, active } = useWeb3React();
+  const { fetchInitialized } = useSalaries();
 
   async function disconnect() {
     try {
@@ -35,6 +40,13 @@ const Navbar = () => {
     return "Not Authorized";
   };
 
+  const getInitialized = async () => {
+    const initialized = await fetchInitialized();
+    console.log("initialized", initialized);
+  };
+
+  getInitialized();
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -48,6 +60,19 @@ const Navbar = () => {
             >
               {displayMessage()}
             </Typography>
+
+            {account === process.env.REACT_APP_EMPLOYER_ADDRESS &&
+              !getInitialized() && (
+                <Button
+                  size="large"
+                  color="warning"
+                  variant="contained"
+                  style={{ marginLeft: 10 }}
+                  startIcon={<PlayArrowIcon />}
+                >
+                  Initialize
+                </Button>
+              )}
 
             <DisplayPublicAddress
               address={ProxyContractAddress}

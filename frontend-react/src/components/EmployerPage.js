@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 
 import Typography from "@mui/material/Typography";
@@ -37,7 +38,7 @@ const EmployerPage = () => {
     const liquidityProviderBalance = await fetchAllowance();
     setState((s) => ({ ...s, liquidityProviderBalance }));
     console.debug("liquidityProviderBalance", liquidityProviderBalance);
-  }, [account]);
+  }, []);
 
   return (
     <>
