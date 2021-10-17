@@ -47,6 +47,11 @@ const Navbar = () => {
               {displayMessage()}
             </Typography>
 
+            <DisplayPublicAddress
+              address={process.env.REACT_APP_CONTRACT_ADDRESS}
+              text="Smart Contract"
+            />
+
             <DisplayPublicAddress address={account} />
 
             <Tooltip

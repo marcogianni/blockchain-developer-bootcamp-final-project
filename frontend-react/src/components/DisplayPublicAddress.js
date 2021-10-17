@@ -6,7 +6,7 @@ import Tooltip from "@mui/material/Tooltip";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Button from "@mui/material/Button";
 
-const DisplayPublicAddress = ({ address }) => {
+const DisplayPublicAddress = ({ address, text }) => {
   const [copied, setCopied] = useState(false);
 
   if (R.isEmpty(address) || R.isNil(address)) {
@@ -35,10 +35,12 @@ const DisplayPublicAddress = ({ address }) => {
         size="large"
         color="info"
         variant="contained"
+        color={R.isNil(text) ? "primary" : "secondary"}
         startIcon={<ContentCopyIcon />}
         onClick={handleClick}
+        style={{ marginLeft: 10 }}
       >
-        {R.join("…", [start, end])}
+        {R.isNil(text) ? R.join("…", [start, end]) : text}
       </Button>
     </Tooltip>
   );
