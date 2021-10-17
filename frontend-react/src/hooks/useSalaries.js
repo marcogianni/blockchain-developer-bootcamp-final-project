@@ -30,15 +30,13 @@ export const useSalaries = () => {
   };
 
   const fetchTotalEmployees = async () => {
-    console.log("SalariesContract", SalariesContract);
     const total = await SalariesContract.totalEmployees();
     return total;
   };
 
   const fetchCalculateWithdrawal = async (account) => {
-    const { finalBalanceToWithdraw, monthsCount } = await SalariesContract.at(
-      ProxyContractAddress
-    ).calculateWithdrawal(account);
+    const { finalBalanceToWithdraw, monthsCount } =
+      await SalariesContract.calculateWithdrawal(account);
 
     return {
       finalBalanceToWithdraw: formatUnits(finalBalanceToWithdraw, 18),

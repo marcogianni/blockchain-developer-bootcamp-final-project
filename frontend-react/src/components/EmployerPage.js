@@ -12,18 +12,31 @@ import {
 } from "components";
 
 import { useSalaries } from "hooks/useSalaries";
+import { useDAI } from "hooks/useDAI";
 
 const EmployerPage = () => {
-  const [state, setState] = useState({ totalEmployees: null });
+  const [state, setState] = useState({
+    totalEmployees: null,
+    liquidityProviderAllowance: null,
+    liquidityProviderBalance: null,
+  });
 
   const { account } = useWeb3React();
   const { fetchTotalEmployees } = useSalaries();
+  const { fetchAllowance } = useDAI();
 
   useEffect(async () => {
     infoNotification("Account changed");
     const total = await fetchTotalEmployees();
     setState((s) => ({ ...s, totalEmployees: total }));
-    console.debug("TOTAL", total);
+
+    const liquidityProviderAllowance = await fetchAllowance();
+    setState((s) => ({ ...s, liquidityProviderAllowance }));
+    console.debug("allowance", liquidityProviderAllowance);
+
+    const liquidityProviderBalance = await fetchAllowance();
+    setState((s) => ({ ...s, liquidityProviderBalance }));
+    console.debug("liquidityProviderBalance", liquidityProviderBalance);
   }, [account]);
 
   return (
@@ -31,7 +44,8 @@ const EmployerPage = () => {
       <FabEmployer />
       <HeaderEmployer
         totalEmployees={state.totalEmployees}
-        liquidityProviderBalance={"10,250"}
+        liquidityProviderBalance={state.liquidityProviderBalance}
+        liquidityProviderAllowance={state.liquidityProviderAllowance}
       />
 
       <Divider

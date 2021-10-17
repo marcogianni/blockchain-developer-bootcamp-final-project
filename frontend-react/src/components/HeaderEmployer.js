@@ -12,10 +12,11 @@ import DAILogo from "svg/DAILogo";
 const HeaderEmployer = ({
   totalEmployees = 0,
   liquidityProviderBalance = 0,
+  liquidityProviderAllowance = 0,
 }) => {
   return (
     <Grid container spacing={2}>
-      <Grid item xs={6}>
+      <Grid item xs={4}>
         <Card>
           <CardContent>
             <Typography variant="h6">Total employees</Typography>
@@ -23,7 +24,32 @@ const HeaderEmployer = ({
           </CardContent>
         </Card>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={4}>
+        <Card>
+          <CardContent>
+            <Typography
+              variant="h6"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              Liquidity Provider Allowance
+              <Tooltip
+                title="If you connect the liquidity provider you will be able to approve the Salaries contract and set the allowance"
+                arrow
+              >
+                <HelpIcon style={{ marginLeft: 10 }} />
+              </Tooltip>
+            </Typography>
+            <Typography variant="h4">
+              <span style={{ display: "flex" }}>
+                <DAILogo style={{ width: 30, marginRight: 5 }} />
+                {liquidityProviderAllowance}
+              </span>
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={4}>
         <Card>
           <CardContent>
             <Typography
@@ -31,12 +57,6 @@ const HeaderEmployer = ({
               style={{ display: "flex", alignItems: "center" }}
             >
               Liquidity Provider Balance
-              <Tooltip
-                title="If you connect the liquidity provider you will be able to approve the Salaries contract and set the allowance"
-                arrow
-              >
-                <HelpIcon style={{ marginLeft: 10 }} />
-              </Tooltip>
             </Typography>
             <Typography variant="h4">
               <span style={{ display: "flex" }}>
