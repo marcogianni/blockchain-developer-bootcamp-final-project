@@ -1,10 +1,15 @@
 import { useContract } from "./useContract";
+import { useWeb3React } from "@web3-react/core";
+import useIsValidNetwork from "./useIsValidNetwork";
 import { address as ContractAddress, ABI } from "contracts/DAIToken";
 import { address as ProxyContractAddress } from "contracts/SalariesProxy";
 
 import { formatUnits } from "@ethersproject/units";
 
 export const useDAI = () => {
+  const { account } = useWeb3React();
+  const { isValidNetwork } = useIsValidNetwork();
+
   // using proxyAddress as address, and ABI Implementation
   const DAIContract = useContract(ContractAddress, ABI);
 
@@ -16,11 +21,22 @@ export const useDAI = () => {
     return formatUnits(allowance, 18);
   };
 
-  const approve = async () => {
-    const approve = await DAIContract.approve(
-      ProxyContractAddress,
-      "1000000000000000000000000"
-    );
+  const approve = async (setLoading) => {
+    if (account && isValidNetwork) {
+      try {
+        setLoading(true);
+        const txn = await DAIContract.approve(
+          ProxyContractAddress,
+          "1000000000000000000000000"
+        );
+        await txn.wait(1);
+        setLoading(false);
+      } catch (err) {
+        console.err("approve.error", err);
+        setLoading(false);
+        return { err };
+      }
+    }
   };
 
   const fetchBalanceOf = async (

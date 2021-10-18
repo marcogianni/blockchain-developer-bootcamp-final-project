@@ -37,6 +37,10 @@ const Navbar = () => {
       return "Hi Employer";
     }
 
+    if (account === process.env.REACT_APP_LIQUIDITY_PROVIDER_ADDRESS) {
+      return "Hi Liquidity Provider";
+    }
+
     return "Not Authorized";
   };
 

@@ -63,6 +63,7 @@ export const useSalaries = () => {
         await txn.wait(1);
       } catch (err) {
         console.err("withdraw.error", err);
+        return { err };
       }
     }
   };

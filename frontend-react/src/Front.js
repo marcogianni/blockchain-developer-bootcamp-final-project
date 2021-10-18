@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import * as R from "ramda";
 import { useWeb3React } from "@web3-react/core";
 
-import { ConnectPage, EmployerPage } from "components";
+import { ConnectPage, EmployerPage, LiquidityProviderPage } from "components";
 import { warningNotification } from "notifications";
 
 const Front = () => {
@@ -21,6 +21,10 @@ const Front = () => {
 
   if (account === process.env.REACT_APP_EMPLOYER_ADDRESS) {
     return <EmployerPage />;
+  }
+
+  if (account === process.env.REACT_APP_LIQUIDITY_PROVIDER_ADDRESS) {
+    return <LiquidityProviderPage />;
   }
 
   return <ConnectPage />;
