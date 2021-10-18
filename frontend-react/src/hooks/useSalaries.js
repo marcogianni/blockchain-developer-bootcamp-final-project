@@ -12,6 +12,8 @@ import { useWeb3React } from "@web3-react/core";
 import { formatUnits } from "@ethersproject/units";
 import { successNotification } from "notifications";
 
+import { marshalEmployeeAddedEvents } from "utils/events";
+
 export const useSalaries = () => {
   const { account } = useWeb3React();
   const { isValidNetwork } = useIsValidNetwork();
@@ -60,12 +62,12 @@ export const useSalaries = () => {
   };
 
   const fetchAddedEmployeeHistory = async () => {
-    const events = await SalariesContract.filters.EmployeeAdded(null, null);
+    const events = await SalariesContract.queryFilter("EmployeeAdded");
     console.debug("fetchAddedEmployeeHistory.events", {
       events,
       SalariesContract,
     });
-    return events;
+    return marshalEmployeeAddedEvents(events);
   };
 
   const withdraw = async () => {

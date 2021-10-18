@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -13,14 +13,18 @@ import Typography from "@mui/material/Typography";
 import { useWeb3React } from "@web3-react/core";
 import { useSalaries } from "hooks/useSalaries";
 
+import DAILogo from "svg/DAILogo";
+
 const rows = [];
 
 const TableAddedEmployeeHistory = () => {
+  const [events, setEvents] = useState([]);
   const { account } = useWeb3React();
   const { fetchAddedEmployeeHistory } = useSalaries();
 
-  useEffect(() => {
-    const events = fetchAddedEmployeeHistory();
+  useEffect(async () => {
+    const events = await fetchAddedEmployeeHistory();
+    setEvents(events);
   }, []);
   return (
     <>
@@ -51,16 +55,27 @@ const TableAddedEmployeeHistory = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {events.map((row) => (
               <StyledTableRow
-                key={row.name}
+                key={row.date}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <StyledTableCell component="th" scope="row">
-                  {row.name}
+                  {row.address}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                <StyledTableCell align="right">{row.fat}</StyledTableCell>
+                <StyledTableCell align="left">{row.date}</StyledTableCell>
+                <StyledTableCell align="right">
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "end",
+                    }}
+                  >
+                    <DAILogo style={{ width: 25, marginRight: 5 }} />
+                    {row.salary}
+                  </span>
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
