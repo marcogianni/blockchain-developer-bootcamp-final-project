@@ -59,6 +59,21 @@ export const useSalaries = () => {
     }
   };
 
+  const addNewEmployee = async (user, salary, setLoading) => {
+    if (account && isValidNetwork) {
+      try {
+        setLoading(true);
+        const txn = await SalariesContract.addEmployee(user, salary);
+        await txn.wait(1);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        console.error("addNewEmployee.error", err);
+        return { err };
+      }
+    }
+  };
+
   useEffect(() => {
     if (account) {
     }
@@ -72,5 +87,6 @@ export const useSalaries = () => {
     fetchCalculateWithdrawal,
     withdraw,
     initialize,
+    addNewEmployee,
   };
 };

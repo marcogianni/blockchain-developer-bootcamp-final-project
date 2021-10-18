@@ -6,3 +6,4 @@ export { default as Layout } from "./Layout";
 export { default as FabEmployer } from "./FabEmployer";
 export { default as HeaderEmployer } from "./HeaderEmployer";
 export { default as TableEmployeeWithdrawals } from "./TableEmployeeWithdrawals";
+export { default as DialogAddEmployee } from "./DialogAddEmployee";

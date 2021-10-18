@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 
 import { useWeb3React } from "@web3-react/core";
-import Divider from "@mui/material/Divider";
 import { infoNotification } from "notifications";
 import {
   FabEmployer,
@@ -23,7 +22,7 @@ const EmployerPage = () => {
 
   const { account } = useWeb3React();
   const { fetchTotalEmployees } = useSalaries();
-  const { fetchAllowance } = useDAI();
+  const { fetchAllowance, fetchBalanceOf } = useDAI();
 
   useEffect(async () => {
     infoNotification("Account changed");
@@ -32,11 +31,9 @@ const EmployerPage = () => {
 
     const liquidityProviderAllowance = await fetchAllowance();
     setState((s) => ({ ...s, liquidityProviderAllowance }));
-    console.debug("allowance", liquidityProviderAllowance);
 
-    const liquidityProviderBalance = await fetchAllowance();
+    const liquidityProviderBalance = await fetchBalanceOf();
     setState((s) => ({ ...s, liquidityProviderBalance }));
-    console.debug("liquidityProviderBalance", liquidityProviderBalance);
   }, [account]);
 
   return (
