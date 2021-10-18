@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import * as R from "ramda";
 import { useContract } from "./useContract";
 import { address as ContractAddress, ABI } from "contracts/Salaries";
 import { address as ProxyContractAddress } from "contracts/SalariesProxy";
@@ -32,6 +33,12 @@ export const useSalaries = () => {
   const fetchTotalEmployees = async () => {
     const total = await SalariesContract.totalEmployees();
     return total;
+  };
+
+  // If token exist contract is initialized
+  const fetchInitialized = async () => {
+    const initialized = await SalariesContract.token();
+    return !R.isNil(initialized) || !R.isEmpty(initialize);
   };
 
   const fetchCalculateWithdrawal = async (account) => {
@@ -88,5 +95,6 @@ export const useSalaries = () => {
     withdraw,
     initialize,
     addNewEmployee,
+    fetchInitialized,
   };
 };

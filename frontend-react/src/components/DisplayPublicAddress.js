@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 import React, { useState } from "react";
 import * as R from "ramda";
 import copy from "copy-to-clipboard";
