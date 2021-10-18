@@ -49,10 +49,10 @@ const TableEmployeesWithdrawals = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>EMPLOYEE</StyledTableCell>
+              <StyledTableCell align="left">WITHDRAWAL DATE</StyledTableCell>
+              {/* <StyledTableCell align="left">PERIOD DATE</StyledTableCell> */}
+              <StyledTableCell align="left">OF MONTHS</StyledTableCell>
               <StyledTableCell align="right">TOTAL WITHDRAWN</StyledTableCell>
-              <StyledTableCell align="right">OF MONTHS</StyledTableCell>
-              <StyledTableCell align="right">WITHDRAWAL DATE</StyledTableCell>
-              <StyledTableCell align="right">PERIOD DATE</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -64,6 +64,9 @@ const TableEmployeesWithdrawals = () => {
                 <StyledTableCell component="th" scope="row">
                   {row.address}
                 </StyledTableCell>
+                <StyledTableCell align="left">{row.date}</StyledTableCell>
+                {/* <StyledTableCell align="left">{row.period}</StyledTableCell> */}
+                <StyledTableCell align="left">{row.months}</StyledTableCell>
                 <StyledTableCell align="right">
                   <span
                     style={{
@@ -76,9 +79,6 @@ const TableEmployeesWithdrawals = () => {
                     {row.amount}
                   </span>
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.months}</StyledTableCell>
-                <StyledTableCell align="right">{row.date}</StyledTableCell>
-                <StyledTableCell align="right">{row.period}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
