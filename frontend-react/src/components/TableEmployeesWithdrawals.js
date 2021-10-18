@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -10,9 +10,21 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-const rows = [];
+import { useWeb3React } from "@web3-react/core";
+import { useSalaries } from "hooks/useSalaries";
+
+import DAILogo from "svg/DAILogo";
 
 const TableEmployeesWithdrawals = () => {
+  const [events, setEvents] = useState([]);
+  const { account } = useWeb3React();
+  const { fetchSalaryWithdrawalEmployeeHistory } = useSalaries();
+
+  useEffect(async () => {
+    const events = await fetchSalaryWithdrawalEmployeeHistory();
+    setEvents(events);
+  }, []);
+
   return (
     <>
       <Typography
@@ -37,23 +49,36 @@ const TableEmployeesWithdrawals = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>EMPLOYEE</StyledTableCell>
-              <StyledTableCell align="right">AMOUNT</StyledTableCell>
-              <StyledTableCell align="right">MONTH COUNT</StyledTableCell>
+              <StyledTableCell align="right">TOTAL WITHDRAWN</StyledTableCell>
+              <StyledTableCell align="right">OF MONTHS</StyledTableCell>
               <StyledTableCell align="right">WITHDRAWAL DATE</StyledTableCell>
+              <StyledTableCell align="right">PERIOD DATE</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {events.map((row) => (
               <StyledTableRow
-                key={row.name}
+                key={row.date}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <StyledTableCell component="th" scope="row">
-                  {row.name}
+                  {row.address}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
+                <StyledTableCell align="right">
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "end",
+                    }}
+                  >
+                    <DAILogo style={{ width: 25, marginRight: 5 }} />
+                    {row.amount}
+                  </span>
+                </StyledTableCell>
+                <StyledTableCell align="right">{row.months}</StyledTableCell>
+                <StyledTableCell align="right">{row.date}</StyledTableCell>
+                <StyledTableCell align="right">{row.period}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

@@ -15,6 +15,7 @@ import { successNotification } from "notifications";
 import {
   marshalEmployeeAddedEvents,
   marshalEmployeeRemovedEvents,
+  marshalSalaryWithdrawalEvents,
 } from "utils/events";
 
 export const useSalaries = () => {
@@ -64,6 +65,7 @@ export const useSalaries = () => {
     await SalariesContract.initialize(tokenAddress, liquidityProviderAddress);
   };
 
+  // EVENTS
   const fetchAddedEmployeeHistory = async () => {
     const events = await SalariesContract.queryFilter("EmployeeAdded");
     return marshalEmployeeAddedEvents(events);
@@ -72,6 +74,12 @@ export const useSalaries = () => {
   const fetchRemovedEmployeeHistory = async () => {
     const events = await SalariesContract.queryFilter("EmployeeRemoved");
     return marshalEmployeeRemovedEvents(events);
+  };
+
+  const fetchSalaryWithdrawalEmployeeHistory = async () => {
+    const events = await SalariesContract.queryFilter("SalaryWithdrawal");
+    console.debug("fetchSalaryWithdrawalEmployeeHistory", events);
+    return marshalSalaryWithdrawalEvents(events);
   };
 
   const withdraw = async () => {
@@ -138,5 +146,6 @@ export const useSalaries = () => {
     removeEmployee,
     fetchAddedEmployeeHistory,
     fetchRemovedEmployeeHistory,
+    fetchSalaryWithdrawalEmployeeHistory,
   };
 };

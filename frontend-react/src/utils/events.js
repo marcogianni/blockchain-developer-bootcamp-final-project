@@ -2,8 +2,12 @@ import * as R from "ramda";
 import moment from "moment";
 import { formatUnits } from "@ethersproject/units";
 
-export const marshalEmployeeAddedEvents = (events) =>
-  R.reverse(
+export const marshalEmployeeAddedEvents = (events) => {
+  if (R.isEmpty(events)) {
+    return [];
+  }
+
+  return R.reverse(
     R.map((single) => {
       return {
         address: single.args.employee,
@@ -12,9 +16,14 @@ export const marshalEmployeeAddedEvents = (events) =>
       };
     })(events)
   );
+};
 
-export const marshalEmployeeRemovedEvents = (events) =>
-  R.reverse(
+export const marshalEmployeeRemovedEvents = (events) => {
+  if (R.isEmpty(events)) {
+    return [];
+  }
+
+  return R.reverse(
     R.map((single) => {
       return {
         address: single.args.employee,
@@ -22,3 +31,26 @@ export const marshalEmployeeRemovedEvents = (events) =>
       };
     })(events)
   );
+};
+
+export const marshalSalaryWithdrawalEvents = (events) => {
+  if (R.isEmpty(events)) {
+    return [];
+  }
+
+  return R.reverse(
+    R.map((single) => {
+      return {
+        address: single.args.sender,
+        amount: formatUnits(single.args.totalWithdrawalAmount),
+        months: single.args.months,
+        date: moment
+          .unix(single.args.transactionTimestamp.toString())
+          .format("LLL"),
+        period: moment
+          .unix(single.args.withdrawPeriod.toString())
+          .format("LLL"),
+      };
+    })(events)
+  );
+};
