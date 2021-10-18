@@ -1,6 +1,45 @@
-# Getting Started with Create React App
-
+# Frontend React
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Website available here [blockchain-developer-bootcamp-final-project-marcogianni.vercel.app/](https://blockchain-developer-bootcamp-final-project-marcogianni.vercel.app/)
+
+
+## Usage & Configuration
+
+`TODO` HERE CONFIG
+
+The project contains `.nvmrc` file with node version to use. Please run:
+```
+nvm use
+```
+
+Then install packages:
+```
+yarn
+```
+
+And then
+```
+yarn start
+```
+
+---
+## 🔑 ENV FILE
+
+Create an `.env` file on project root. Here the path:
+```
+blockchain-developer-bootcamp-final-project/frontent-react/.env
+```
+
+The env file shoud contain:
+```
+REACT_APP_EMPLOYER_ADDRESS=""                 # contract owner
+REACT_APP_LIQUIDITY_PROVIDER_ADDRESS=""       # liquidity provider
+REACT_APP_INFURA_API_KEY=""                   # your infura project key
+```
+
+---
+
 
 ## Available Scripts
 
