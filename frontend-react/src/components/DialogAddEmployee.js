@@ -32,7 +32,7 @@ export default function DialogAddEmployee({ open, handleClose }) {
 
     const trx = await addNewEmployee(
       form.address,
-      parseEther(form.amount),
+      parseEther(form.amount.toString()),
       setLoading
     );
 
