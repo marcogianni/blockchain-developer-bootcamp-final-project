@@ -60,7 +60,7 @@ export const useSalaries = () => {
   };
 
   const fetchAddedEmployeeHistory = async () => {
-    const events = await SalariesContract.filters.EmployeeAdded();
+    const events = await SalariesContract.filters.EmployeeAdded(null, null);
     console.debug("fetchAddedEmployeeHistory.events", {
       events,
       SalariesContract,

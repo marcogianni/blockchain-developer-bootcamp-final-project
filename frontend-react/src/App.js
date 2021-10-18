@@ -1,3 +1,4 @@
+import React, { useContext } from "react";
 import { ToastContainer } from "react-toastify";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Web3ReactProvider } from "@web3-react/core";
@@ -9,6 +10,8 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "react-toastify/dist/ReactToastify.css";
+
+import { EventsContextProvider } from "contexts/EventsContext";
 
 import { Layout, Navbar } from "components";
 import Front from "./Front";
@@ -36,12 +39,14 @@ function App() {
         rtl={false}
         draggable
       />
-      <ThemeProvider theme={theme}>
-        <Navbar />
-        <Layout>
-          <Front />
-        </Layout>
-      </ThemeProvider>
+      <EventsContextProvider>
+        <ThemeProvider theme={theme}>
+          <Navbar />
+          <Layout>
+            <Front />
+          </Layout>
+        </ThemeProvider>
+      </EventsContextProvider>
     </Web3ReactProvider>
   );
 }
