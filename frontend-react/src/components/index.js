@@ -11,3 +11,4 @@ export { default as HeaderEmployer } from "./HeaderEmployer";
 export { default as TableEmployeesWithdrawals } from "./TableEmployeesWithdrawals";
 export { default as DialogAddEmployee } from "./DialogAddEmployee";
 export { default as DialogRemoveEmployee } from "./DialogRemoveEmployee";
+export { default as TableAddedEmployeeHistory } from "./TableAddedEmployeeHistory";

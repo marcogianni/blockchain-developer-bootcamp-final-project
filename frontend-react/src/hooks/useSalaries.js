@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import * as R from "ramda";
 import { useContract } from "./useContract";
-import { ABI } from "contracts/Salaries";
-import { address as ProxyContractAddress } from "contracts/SalariesProxy";
+import { address, ABI } from "contracts/Salaries";
+import {
+  address as ProxyContractAddress,
+  ABI as ProxyABI,
+} from "contracts/SalariesProxy";
 
 import useIsValidNetwork from "./useIsValidNetwork";
 import { useWeb3React } from "@web3-react/core";
@@ -54,6 +57,15 @@ export const useSalaries = () => {
 
   const initialize = async (tokenAddress, liquidityProviderAddress) => {
     await SalariesContract.initialize(tokenAddress, liquidityProviderAddress);
+  };
+
+  const fetchAddedEmployeeHistory = async () => {
+    const events = await SalariesContract.filters.EmployeeAdded();
+    console.debug("fetchAddedEmployeeHistory.events", {
+      events,
+      SalariesContract,
+    });
+    return events;
   };
 
   const withdraw = async () => {
@@ -118,5 +130,6 @@ export const useSalaries = () => {
     addNewEmployee,
     fetchInitialized,
     removeEmployee,
+    fetchAddedEmployeeHistory,
   };
 };

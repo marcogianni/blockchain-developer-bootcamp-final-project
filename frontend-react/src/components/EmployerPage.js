@@ -7,8 +7,8 @@ import {
   FabEmployer,
   HeaderEmployer,
   TableEmployeesWithdrawals,
+  TableAddedEmployeeHistory,
 } from "components";
-import Typography from "@mui/material/Typography";
 
 import { useSalaries } from "hooks/useSalaries";
 import { useDAI } from "hooks/useDAI";
@@ -44,31 +44,16 @@ const EmployerPage = () => {
   return (
     <>
       <FabEmployer updateTotalEmployees={updateTotalEmployees} />
+
       <HeaderEmployer
         totalEmployees={state.totalEmployees}
         liquidityProviderBalance={state.liquidityProviderBalance}
         liquidityProviderAllowance={state.liquidityProviderAllowance}
       />
 
-      <Typography
-        variant="h4"
-        style={{
-          color: "white",
-          textTransform: "uppercase",
-          letterSpacing: 1,
-          textAlign: "left",
-          marginTop: 50,
-          marginBottom: 20,
-          display: "block",
-          fontWeight: "bold",
-          fontSize: 25,
-        }}
-        component="span"
-      >
-        Latest employee withdrawals
-      </Typography>
-
       <TableEmployeesWithdrawals />
+
+      <TableAddedEmployeeHistory />
     </>
   );
 };

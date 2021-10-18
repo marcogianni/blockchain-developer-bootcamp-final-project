@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -10,9 +10,18 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
+import { useWeb3React } from "@web3-react/core";
+import { useSalaries } from "hooks/useSalaries";
+
 const rows = [];
 
-const TableEmployeesWithdrawals = () => {
+const TableAddedEmployeeHistory = () => {
+  const { account } = useWeb3React();
+  const { fetchAddedEmployeeHistory } = useSalaries();
+
+  useEffect(() => {
+    const events = fetchAddedEmployeeHistory();
+  }, []);
   return (
     <>
       <Typography
@@ -30,16 +39,15 @@ const TableEmployeesWithdrawals = () => {
         }}
         component="span"
       >
-        Latest employee withdrawals
+        History of added employees
       </Typography>
       <TableContainer component={Paper} style={{ marginBottom: 100 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>EMPLOYEE</StyledTableCell>
-              <StyledTableCell align="right">AMOUNT</StyledTableCell>
-              <StyledTableCell align="right">MONTH COUNT</StyledTableCell>
-              <StyledTableCell align="right">WITHDRAWAL DATE</StyledTableCell>
+              <StyledTableCell align="left">ADDRESS</StyledTableCell>
+              <StyledTableCell align="left">DATE ADDED</StyledTableCell>
+              <StyledTableCell align="right">SALARY</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -53,7 +61,6 @@ const TableEmployeesWithdrawals = () => {
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.calories}</StyledTableCell>
                 <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
@@ -84,4 +91,4 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-export default TableEmployeesWithdrawals;
+export default TableAddedEmployeeHistory;

@@ -1,4 +1,4 @@
-export const address = "0x3ccA21BdF9Ec2810fEc688878Db0791d5Fb0B01a";
+export const address = "0x3EC3479b4DC851287Ce72F6C00E0D6DA46a43Ee1";
 
 export const ABI = [
   {
@@ -31,6 +31,50 @@ export const ABI = [
       },
     ],
     name: "BeaconUpgraded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "employee",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "date",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "salary",
+        type: "uint256",
+      },
+    ],
+    name: "EmployeeAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "employee",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "date",
+        type: "uint256",
+      },
+    ],
+    name: "EmployeeRemoved",
     type: "event",
   },
   {
@@ -369,25 +413,6 @@ export const ABI = [
       },
     ],
     name: "salaries",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "salaryChangeDates",
     outputs: [
       {
         internalType: "uint256",
