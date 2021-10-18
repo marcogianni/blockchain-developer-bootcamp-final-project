@@ -48,6 +48,19 @@ contract Salaries is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgrade
         uint256 withdrawPeriod
     );
 
+    /**
+     * @param employee Employee address.
+     * @param date add date
+     * @param salary Employee salary
+     */
+    event EmployeeAdded(address indexed employee, uint256 date, uint256 salary);
+
+    /**
+     * @param employee Employee address.
+     * @param date removal date
+     */
+    event EmployeeRemoved(address indexed employee, uint256 date);
+
     // The address for the Liquidity Providers
     AddressParam public liquidityProviderAddressParam;
 
@@ -112,6 +125,7 @@ contract Salaries is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgrade
         salaries[_employee] = _salary;
         dates[_employee] = _now();
         totalEmployees += 1;
+        emit EmployeeAdded(_employee, _now(), _salary);
     }
 
     /*
@@ -122,6 +136,7 @@ contract Salaries is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgrade
     function removeEmployee(address _employee) public onlyOwner whenNotPaused {
         require(salaries[_employee] != 0, "Not an employee");
         removalDates[_employee] = _now();
+        emit EmployeeRemoved(_employee, _now());
     }
 
     function withdraw() public receivesASalary(msg.sender) whenNotPaused {
