@@ -44,7 +44,9 @@ export default function DialogRemoveEmployee({
         <DialogTitle>Remove Employee</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Set a monthly salary to an employee (every 30 days)
+            The employee will be permanently removed after collecting his last
+            pay. You should remove the employee after the day he should receive
+            his last pay
           </DialogContentText>
           <TextField
             autoFocus
