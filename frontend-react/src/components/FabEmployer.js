@@ -5,7 +5,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 import { DialogAddEmployee } from "components";
 
-const FabEmployer = () => {
+const FabEmployer = ({ updateTotalEmployees }) => {
   const [dialogAddOpen, setDialogAddOpen] = useState(false);
   const [dialogRemoveOpen, setDialogRemoveOpen] = useState(false);
 
@@ -22,6 +22,7 @@ const FabEmployer = () => {
       <DialogAddEmployee
         open={dialogAddOpen}
         handleClose={handleClickCloseDialogAddEmployee}
+        updateTotalEmployees={updateTotalEmployees}
       />
       <div
         style={{

@@ -7,21 +7,17 @@ async function main() {
   // Deploying
   const Salaries = await ethers.getContractFactory("Salaries");
   console.log("Deploying implementation(first) and ERC1967Proxy(second)...");
-  const instance = await upgrades.deployProxy(
-    Salaries,
-    [TOKEN_ADDRESS, LIQUIDY_PROVIDER_ADDRESS],
-    {
-      initializer: "initialize",
-      kind: "uups",
-    }
-  );
+  const instance = await upgrades.deployProxy(Salaries, [TOKEN_ADDRESS, LIQUIDY_PROVIDER_ADDRESS], {
+    initializer: "initialize",
+    kind: "uups",
+  });
   console.log("Proxy deployed to: ", instance.address);
   await instance.deployed();
 }
 
 main()
   .then(() => process.exit(0))
-  .catch((err) => {
+  .catch(err => {
     console.error(err);
     process.exit(1);
   });

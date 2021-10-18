@@ -20,7 +20,11 @@ import { useWeb3React } from "@web3-react/core";
 import { parseEther } from "@ethersproject/units";
 import { warningNotification } from "notifications";
 
-export default function DialogAddEmployee({ open, handleClose }) {
+export default function DialogAddEmployee({
+  open,
+  handleClose,
+  updateTotalEmployees,
+}) {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ address: null, amount: null });
 
@@ -38,9 +42,12 @@ export default function DialogAddEmployee({ open, handleClose }) {
 
     const error = R.pathOr(null, ["err", "error", "message"], trx);
     console.debug("TRX", { trx, error });
+
     if (error) {
       warningNotification(error);
     }
+
+    updateTotalEmployees();
     handleClose();
   };
 

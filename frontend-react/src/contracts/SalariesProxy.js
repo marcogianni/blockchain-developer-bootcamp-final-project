@@ -1,4 +1,4 @@
-export const address = "0xCCafdA965637B37DD7EE879a6Dbeec463e1875d4";
+export const address = "0x8BaCB47C33A5144EF44A0dcEDD331ed73F99472d";
 
 export const ABI = [
   {

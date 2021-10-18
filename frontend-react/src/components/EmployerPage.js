@@ -24,10 +24,15 @@ const EmployerPage = () => {
   const { fetchTotalEmployees } = useSalaries();
   const { fetchAllowance, fetchBalanceOf } = useDAI();
 
-  useEffect(async () => {
-    infoNotification("Account changed");
+  const updateTotalEmployees = async () => {
     const total = await fetchTotalEmployees();
     setState((s) => ({ ...s, totalEmployees: total }));
+  };
+
+  useEffect(async () => {
+    infoNotification("Account changed");
+
+    updateTotalEmployees();
 
     const liquidityProviderAllowance = await fetchAllowance();
     setState((s) => ({ ...s, liquidityProviderAllowance }));
@@ -38,7 +43,7 @@ const EmployerPage = () => {
 
   return (
     <>
-      <FabEmployer />
+      <FabEmployer updateTotalEmployees={updateTotalEmployees} />
       <HeaderEmployer
         totalEmployees={state.totalEmployees}
         liquidityProviderBalance={state.liquidityProviderBalance}
