@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import * as R from "ramda";
 import { useContract } from "./useContract";
-import { address as ContractAddress, ABI } from "contracts/Salaries";
+import { ABI } from "contracts/Salaries";
 import { address as ProxyContractAddress } from "contracts/SalariesProxy";
 
 import useIsValidNetwork from "./useIsValidNetwork";
 import { useWeb3React } from "@web3-react/core";
-import { formatUnits, parseEther } from "@ethersproject/units";
+import { formatUnits } from "@ethersproject/units";
 import { successNotification } from "notifications";
 
 export const useSalaries = () => {

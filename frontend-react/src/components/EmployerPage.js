@@ -21,7 +21,7 @@ const EmployerPage = () => {
   });
 
   const { account } = useWeb3React();
-  const { fetchTotalEmployees, fetchEmployeeSalary } = useSalaries();
+  const { fetchTotalEmployees } = useSalaries();
   const { fetchAllowance, fetchBalanceOf } = useDAI();
 
   const updateTotalEmployees = async () => {

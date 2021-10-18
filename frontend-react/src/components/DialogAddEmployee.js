@@ -16,7 +16,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import DAILogo from "svg/DAILogo";
 
 import { useSalaries } from "hooks/useSalaries";
-import { useWeb3React } from "@web3-react/core";
 import { parseEther } from "@ethersproject/units";
 import { warningNotification } from "notifications";
 
@@ -28,7 +27,6 @@ export default function DialogAddEmployee({
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ address: null, amount: null });
 
-  const { account } = useWeb3React();
   const { addNewEmployee } = useSalaries();
 
   const handleSubmit = async () => {

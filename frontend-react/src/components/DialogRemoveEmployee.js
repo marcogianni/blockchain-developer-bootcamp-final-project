@@ -10,8 +10,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import { useSalaries } from "hooks/useSalaries";
-import { useWeb3React } from "@web3-react/core";
-import { parseEther } from "@ethersproject/units";
 import { warningNotification } from "notifications";
 
 export default function DialogRemoveEmployee({
@@ -22,17 +20,12 @@ export default function DialogRemoveEmployee({
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ address: null });
 
-  const { account } = useWeb3React();
   const { removeEmployee } = useSalaries();
 
   const handleSubmit = async () => {
     setLoading(true);
 
-    const trx = await removeEmployee(
-      form.address,
-      parseEther(form.amount.toString()),
-      setLoading
-    );
+    const trx = await removeEmployee(form.address, setLoading);
 
     const error = R.pathOr(null, ["err", "error", "message"], trx);
     console.debug("TRX", { trx, error });

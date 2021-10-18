@@ -3,7 +3,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-import { DialogAddEmployee } from "components";
+import { DialogAddEmployee, DialogRemoveEmployee } from "components";
 
 const FabEmployer = ({ updateTotalEmployees }) => {
   const [dialogAddOpen, setDialogAddOpen] = useState(false);
@@ -17,6 +17,14 @@ const FabEmployer = ({ updateTotalEmployees }) => {
     setDialogAddOpen(false);
   };
 
+  const handleClickOpenDialogRemoveEmployee = () => {
+    setDialogRemoveOpen(true);
+  };
+
+  const handleClickCloseDialogRemoveEmployee = () => {
+    setDialogRemoveOpen(false);
+  };
+
   return (
     <>
       <DialogAddEmployee
@@ -24,6 +32,13 @@ const FabEmployer = ({ updateTotalEmployees }) => {
         handleClose={handleClickCloseDialogAddEmployee}
         updateTotalEmployees={updateTotalEmployees}
       />
+
+      <DialogRemoveEmployee
+        open={dialogRemoveOpen}
+        handleClose={handleClickCloseDialogRemoveEmployee}
+        updateTotalEmployees={updateTotalEmployees}
+      />
+
       <div
         style={{
           position: "fixed",
@@ -41,7 +56,12 @@ const FabEmployer = ({ updateTotalEmployees }) => {
           Add Employee
         </Fab>
 
-        <Fab variant="extended" color="secondary" style={{ marginLeft: 10 }}>
+        <Fab
+          variant="extended"
+          color="secondary"
+          style={{ marginLeft: 10 }}
+          onClick={handleClickOpenDialogRemoveEmployee}
+        >
           <RemoveIcon sx={{ mr: 1 }} />
           Remove Employee
         </Fab>

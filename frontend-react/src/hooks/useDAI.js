@@ -1,16 +1,10 @@
-import { useEffect } from "react";
 import { useContract } from "./useContract";
 import { address as ContractAddress, ABI } from "contracts/DAIToken";
 import { address as ProxyContractAddress } from "contracts/SalariesProxy";
 
-import useIsValidNetwork from "./useIsValidNetwork";
-import { useWeb3React } from "@web3-react/core";
-import { formatUnits, parseEther } from "@ethersproject/units";
+import { formatUnits } from "@ethersproject/units";
 
 export const useDAI = () => {
-  const { account } = useWeb3React();
-  const { isValidNetwork } = useIsValidNetwork();
-
   // using proxyAddress as address, and ABI Implementation
   const DAIContract = useContract(ContractAddress, ABI);
 
