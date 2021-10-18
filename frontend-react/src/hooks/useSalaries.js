@@ -7,6 +7,7 @@ import { address as ProxyContractAddress } from "contracts/SalariesProxy";
 import useIsValidNetwork from "./useIsValidNetwork";
 import { useWeb3React } from "@web3-react/core";
 import { formatUnits, parseEther } from "@ethersproject/units";
+import { successNotification } from "notifications";
 
 export const useSalaries = () => {
   const { account } = useWeb3React();
@@ -73,9 +74,28 @@ export const useSalaries = () => {
         const txn = await SalariesContract.addEmployee(user, salary);
         await txn.wait(1);
         setLoading(false);
+        successNotification("Employee successfully added");
       } catch (err) {
         setLoading(false);
         console.error("addNewEmployee.error", err);
+        return { err };
+      }
+    }
+  };
+
+  const removeEmployee = async (user, setLoading) => {
+    if (account && isValidNetwork) {
+      try {
+        setLoading(true);
+        const txn = await SalariesContract.removeEmployee(user);
+        await txn.wait(1);
+        setLoading(false);
+        successNotification(
+          "Employee removed, wait for the employee to withdraw the last salary."
+        );
+      } catch (err) {
+        setLoading(false);
+        console.error("removeEmployee.error", err);
         return { err };
       }
     }
@@ -96,5 +116,6 @@ export const useSalaries = () => {
     initialize,
     addNewEmployee,
     fetchInitialized,
+    removeEmployee,
   };
 };

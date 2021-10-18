@@ -15,7 +15,7 @@ function createData(name, calories, fat, carbs, protein) {
 
 const rows = [];
 
-const TableEmployeeWithdrawals = () => {
+const TableEmployeesWithdrawals = () => {
   return (
     <TableContainer component={Paper} style={{ marginBottom: 100 }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -68,4 +68,4 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-export default TableEmployeeWithdrawals;
+export default TableEmployeesWithdrawals;

@@ -6,7 +6,7 @@ import { infoNotification } from "notifications";
 import {
   FabEmployer,
   HeaderEmployer,
-  TableEmployeeWithdrawals,
+  TableEmployeesWithdrawals,
 } from "components";
 import Typography from "@mui/material/Typography";
 
@@ -68,7 +68,7 @@ const EmployerPage = () => {
         Latest employee withdrawals
       </Typography>
 
-      <TableEmployeeWithdrawals />
+      <TableEmployeesWithdrawals />
     </>
   );
 };
