@@ -60,7 +60,7 @@ const LiquidityProviderPage = () => {
         liquidityProviderAllowance={state.liquidityProviderAllowance}
         isLiquidityProvider={true}
       />
-      {Number(state.liquidityProviderAllowance) > 10000 && (
+      {Number(state.liquidityProviderAllowance) < 10000 && (
         <LoadingButton
           loading={loading}
           size="large"
