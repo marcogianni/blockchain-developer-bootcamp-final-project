@@ -73,7 +73,6 @@ contract Salaries is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgrade
      * The calculation of how much an employee can withdraw depends on the salary (greater than zero) and the last date saved in this mapping.
      */
     mapping(address => uint256) public dates;
-    mapping(address => uint256) public salaryChangeDates;
     mapping(address => uint256) public removalDates;
     uint16 public totalEmployees; // max 65535 employee
 
