@@ -8,6 +8,7 @@ import {
   HeaderEmployer,
   TableEmployeesWithdrawals,
   TableAddedEmployeeHistory,
+  TableRemovedEmployeeHistory,
 } from "components";
 
 import { useSalaries } from "hooks/useSalaries";
@@ -52,8 +53,8 @@ const EmployerPage = () => {
       />
 
       <TableEmployeesWithdrawals />
-
       <TableAddedEmployeeHistory />
+      <TableRemovedEmployeeHistory />
     </>
   );
 };

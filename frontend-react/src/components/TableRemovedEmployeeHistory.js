@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import * as R from "ramda";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,17 +13,20 @@ import Typography from "@mui/material/Typography";
 import { useWeb3React } from "@web3-react/core";
 import { useSalaries } from "hooks/useSalaries";
 
-import DAILogo from "svg/DAILogo";
-
-const TableAddedEmployeeHistory = () => {
+const TableRemovedEmployeeHistory = () => {
   const [events, setEvents] = useState([]);
   const { account } = useWeb3React();
-  const { fetchAddedEmployeeHistory } = useSalaries();
+  const { fetchRemovedEmployeeHistory } = useSalaries();
 
   useEffect(async () => {
-    const events = await fetchAddedEmployeeHistory();
+    const events = await fetchRemovedEmployeeHistory();
     setEvents(events);
   }, []);
+
+  if (R.isEmpty(events)) {
+    return null;
+  }
+
   return (
     <>
       <Typography
@@ -41,15 +44,14 @@ const TableAddedEmployeeHistory = () => {
         }}
         component="span"
       >
-        History of added employees
+        History of removed users
       </Typography>
       <TableContainer component={Paper} style={{ marginBottom: 100 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <StyledTableCell align="left">ADDRESS</StyledTableCell>
-              <StyledTableCell align="left">DATE ADDED</StyledTableCell>
-              <StyledTableCell align="right">SALARY</StyledTableCell>
+              <StyledTableCell align="right">DATE ADDED</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -61,19 +63,7 @@ const TableAddedEmployeeHistory = () => {
                 <StyledTableCell component="th" scope="row">
                   {row.address}
                 </StyledTableCell>
-                <StyledTableCell align="left">{row.date}</StyledTableCell>
-                <StyledTableCell align="right">
-                  <span
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "end",
-                    }}
-                  >
-                    <DAILogo style={{ width: 25, marginRight: 5 }} />
-                    {row.salary}
-                  </span>
-                </StyledTableCell>
+                <StyledTableCell align="right">{row.date}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
@@ -104,4 +94,4 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-export default TableAddedEmployeeHistory;
+export default TableRemovedEmployeeHistory;

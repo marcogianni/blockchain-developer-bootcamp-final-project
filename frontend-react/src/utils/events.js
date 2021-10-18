@@ -12,3 +12,13 @@ export const marshalEmployeeAddedEvents = (events) =>
       };
     })(events)
   );
+
+export const marshalEmployeeRemovedEvents = (events) =>
+  R.reverse(
+    R.map((single) => {
+      return {
+        address: single.args.employee,
+        date: moment.unix(single.args.date.toString()).format("LLL"),
+      };
+    })(events)
+  );

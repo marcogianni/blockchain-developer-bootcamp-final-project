@@ -12,3 +12,4 @@ export { default as TableEmployeesWithdrawals } from "./TableEmployeesWithdrawal
 export { default as DialogAddEmployee } from "./DialogAddEmployee";
 export { default as DialogRemoveEmployee } from "./DialogRemoveEmployee";
 export { default as TableAddedEmployeeHistory } from "./TableAddedEmployeeHistory";
+export { default as TableRemovedEmployeeHistory } from "./TableRemovedEmployeeHistory";

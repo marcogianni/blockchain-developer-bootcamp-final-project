@@ -12,7 +12,10 @@ import { useWeb3React } from "@web3-react/core";
 import { formatUnits } from "@ethersproject/units";
 import { successNotification } from "notifications";
 
-import { marshalEmployeeAddedEvents } from "utils/events";
+import {
+  marshalEmployeeAddedEvents,
+  marshalEmployeeRemovedEvents,
+} from "utils/events";
 
 export const useSalaries = () => {
   const { account } = useWeb3React();
@@ -63,11 +66,12 @@ export const useSalaries = () => {
 
   const fetchAddedEmployeeHistory = async () => {
     const events = await SalariesContract.queryFilter("EmployeeAdded");
-    console.debug("fetchAddedEmployeeHistory.events", {
-      events,
-      SalariesContract,
-    });
     return marshalEmployeeAddedEvents(events);
+  };
+
+  const fetchRemovedEmployeeHistory = async () => {
+    const events = await SalariesContract.queryFilter("EmployeeRemoved");
+    return marshalEmployeeRemovedEvents(events);
   };
 
   const withdraw = async () => {
@@ -133,5 +137,6 @@ export const useSalaries = () => {
     fetchInitialized,
     removeEmployee,
     fetchAddedEmployeeHistory,
+    fetchRemovedEmployeeHistory,
   };
 };
