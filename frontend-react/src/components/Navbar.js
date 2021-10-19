@@ -51,6 +51,13 @@ const Navbar = () => {
 
   getInitialized();
 
+  const isEmployerOrLiquidityProvider = (address) => {
+    return (
+      address === process.env.REACT_APP_LIQUIDITY_PROVIDER_ADDRESS ||
+      address === process.env.REACT_APP_EMPLOYER_ADDRESS
+    );
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -78,10 +85,12 @@ const Navbar = () => {
                 </Button>
               )}
 
-            <DisplayPublicAddress
-              address={ProxyContractAddress}
-              text="Smart Contract"
-            />
+            {isEmployerOrLiquidityProvider(account) && (
+              <DisplayPublicAddress
+                address={ProxyContractAddress}
+                text="Smart Contract"
+              />
+            )}
 
             <DisplayPublicAddress address={account} />
 

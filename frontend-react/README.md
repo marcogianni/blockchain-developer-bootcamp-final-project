@@ -7,6 +7,23 @@ Website available here [blockchain-developer-bootcamp-final-project-marcogianni.
 ## Usage & Configuration
 
 In addition to using the environment variables, you must also perform the following steps to configure the project.
+
+
+---
+## 🔑 ENV FILE
+
+Create an `.env` file on project root. Here the path:
+```
+blockchain-developer-bootcamp-final-project/frontent-react/.env
+```
+
+The env file shoud contain:
+```
+REACT_APP_EMPLOYER_ADDRESS=""                 # contract owner
+REACT_APP_LIQUIDITY_PROVIDER_ADDRESS=""       # liquidity provider
+REACT_APP_INFURA_API_KEY=""                   # your infura project key
+```
+
 Environment variables allow different views in the UI, you need to know in advance who is viewing the page.
 
 In Front.js 
@@ -27,21 +44,6 @@ if (account === process.env.REACT_APP_LIQUIDITY_PROVIDER_ADDRESS) {
 Addresses that have an associated salary will be able to see their monthly salary and withdrawal history.
 
 Those who do not receive a salary and therefore are not an employee see only the login screen.
-
----
-## 🔑 ENV FILE
-
-Create an `.env` file on project root. Here the path:
-```
-blockchain-developer-bootcamp-final-project/frontent-react/.env
-```
-
-The env file shoud contain:
-```
-REACT_APP_EMPLOYER_ADDRESS=""                 # contract owner
-REACT_APP_LIQUIDITY_PROVIDER_ADDRESS=""       # liquidity provider
-REACT_APP_INFURA_API_KEY=""                   # your infura project key
-```
 
 ---
 
