@@ -1,18 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import * as R from "ramda";
-
 import { useWeb3React } from "@web3-react/core";
-import { infoNotification } from "notifications";
+
+import {
+  infoNotification,
+  warningNotification,
+  successNotification,
+} from "notifications";
+
 import { HeaderEmployer } from "components";
-import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 
-import { useSalaries } from "hooks/useSalaries";
 import { useDAI } from "hooks/useDAI";
-
-import { warningNotification, successNotification } from "notifications";
 
 const LiquidityProviderPage = () => {
   const [loading, setLoading] = useState(false);
@@ -29,27 +30,28 @@ const LiquidityProviderPage = () => {
     setState((s) => ({ ...s, liquidityProviderAllowance }));
   };
 
+  const updateBalance = async () => {
+    const liquidityProviderBalance = await fetchBalanceOf();
+    setState((s) => ({ ...s, liquidityProviderBalance }));
+  };
+
   useEffect(async () => {
     infoNotification("Account changed");
 
     getAllowance();
-
-    const liquidityProviderBalance = await fetchBalanceOf();
-    setState((s) => ({ ...s, liquidityProviderBalance }));
+    updateBalance();
   }, [account]);
 
   const handleClick = async () => {
     const trx = await approve(setLoading);
-
     const error = R.pathOr(null, ["err", "error", "message"], trx);
-    console.debug("TRX", { trx, error });
 
     if (error) {
       warningNotification(error);
+    } else {
+      successNotification("Allowance Updated");
+      getAllowance();
     }
-
-    successNotification("Allowance Updated");
-    getAllowance();
   };
 
   return (
@@ -63,8 +65,6 @@ const LiquidityProviderPage = () => {
       {Number(state.liquidityProviderAllowance) < 10000 && (
         <LoadingButton
           loading={loading}
-          size="large"
-          color="info"
           size="large"
           variant="contained"
           color={"secondary"}

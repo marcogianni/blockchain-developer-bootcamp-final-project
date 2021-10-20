@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import * as R from "ramda";
 import { styled } from "@mui/material/styles";
@@ -17,9 +18,13 @@ const TableRemovedEmployeeHistory = () => {
   const [events, setEvents] = useState([]);
   const { fetchRemovedEmployeeHistory } = useSalaries();
 
-  useEffect(async () => {
+  const fetchData = async () => {
     const events = await fetchRemovedEmployeeHistory();
     setEvents(events);
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   if (R.isEmpty(events)) {
@@ -56,7 +61,7 @@ const TableRemovedEmployeeHistory = () => {
           <TableBody>
             {events.map((row) => (
               <StyledTableRow
-                key={row.date}
+                key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <StyledTableCell component="th" scope="row">

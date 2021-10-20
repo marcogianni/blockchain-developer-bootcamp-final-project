@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 
 import { styled } from "@mui/material/styles";
@@ -18,9 +19,13 @@ const TableAddedEmployeeHistory = () => {
   const [events, setEvents] = useState([]);
   const { fetchAddedEmployeeHistory } = useSalaries();
 
-  useEffect(async () => {
+  const fetchData = async () => {
     const events = await fetchAddedEmployeeHistory();
     setEvents(events);
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
   return (
     <>
@@ -53,7 +58,7 @@ const TableAddedEmployeeHistory = () => {
           <TableBody>
             {events.map((row) => (
               <StyledTableRow
-                key={row.date}
+                key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <StyledTableCell component="th" scope="row">

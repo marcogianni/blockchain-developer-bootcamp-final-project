@@ -10,7 +10,6 @@ export const useDAI = () => {
   const { account } = useWeb3React();
   const { isValidNetwork } = useIsValidNetwork();
 
-  // using proxyAddress as address, and ABI Implementation
   const DAIContract = useContract(ContractAddress, ABI);
 
   const fetchAllowance = async (

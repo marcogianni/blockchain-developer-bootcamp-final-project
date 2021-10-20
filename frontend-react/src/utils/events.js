@@ -10,6 +10,7 @@ export const marshalEmployeeAddedEvents = (events) => {
   return R.reverse(
     R.map((single) => {
       return {
+        id: single.transactionHash,
         address: single.args.employee,
         date: moment.unix(single.args.date.toString()).format("LLL"),
         salary: formatUnits(single.args.salary),
@@ -26,6 +27,7 @@ export const marshalEmployeeRemovedEvents = (events) => {
   return R.reverse(
     R.map((single) => {
       return {
+        id: single.transactionHash,
         address: single.args.employee,
         date: moment.unix(single.args.date.toString()).format("LLL"),
       };
@@ -41,6 +43,7 @@ export const marshalSalaryWithdrawalEvents = (events) => {
   return R.reverse(
     R.map((single) => {
       return {
+        id: single.transactionHash,
         address: single.args.sender,
         amount: formatUnits(single.args.totalWithdrawalAmount),
         months: single.args.months,

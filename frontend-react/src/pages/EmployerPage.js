@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-
 import { useWeb3React } from "@web3-react/core";
+
 import { infoNotification } from "notifications";
 import {
   FabEmployer,
@@ -30,16 +30,22 @@ const EmployerPage = () => {
     setState((s) => ({ ...s, totalEmployees: total }));
   };
 
-  useEffect(async () => {
+  const updateAllowance = async () => {
+    const liquidityProviderAllowance = await fetchAllowance();
+    setState((s) => ({ ...s, liquidityProviderAllowance }));
+  };
+
+  const updateBalance = async () => {
+    const liquidityProviderBalance = await fetchBalanceOf();
+    setState((s) => ({ ...s, liquidityProviderBalance }));
+  };
+
+  useEffect(() => {
     infoNotification("Account changed");
 
     updateTotalEmployees();
-
-    const liquidityProviderAllowance = await fetchAllowance();
-    setState((s) => ({ ...s, liquidityProviderAllowance }));
-
-    const liquidityProviderBalance = await fetchBalanceOf();
-    setState((s) => ({ ...s, liquidityProviderBalance }));
+    updateAllowance();
+    updateBalance();
   }, [account]);
 
   return (

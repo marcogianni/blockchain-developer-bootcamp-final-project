@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 import * as R from "ramda";
+import { useWeb3React } from "@web3-react/core";
+import { formatUnits } from "@ethersproject/units";
+
 import { useContract } from "./useContract";
+import useIsValidNetwork from "./useIsValidNetwork";
+
+// Contracts
 import { ABI } from "contracts/Salaries";
 import { address as ProxyContractAddress } from "contracts/SalariesProxy";
 
-import useIsValidNetwork from "./useIsValidNetwork";
-import { useWeb3React } from "@web3-react/core";
-import { formatUnits } from "@ethersproject/units";
 import { successNotification } from "notifications";
 
 import {

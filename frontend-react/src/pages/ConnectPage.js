@@ -10,9 +10,7 @@ import ConsenSys from "svg/ConsenSys";
 import { injected } from "components/connectors";
 
 const ConnectPage = () => {
-  const { activate, chainId } = useWeb3React();
-
-  console.debug("ConnectPage", { activate, chainId });
+  const { activate } = useWeb3React();
 
   async function connect() {
     try {
