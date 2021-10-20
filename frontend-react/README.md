@@ -6,22 +6,8 @@ Website available here [blockchain-developer-bootcamp-final-project-marcogianni.
 
 ## Usage & Configuration
 
-`TODO` HERE CONFIG
+In addition to using the environment variables, you must also perform the following steps to configure the project.
 
-The project contains `.nvmrc` file with node version to use. Please run:
-```
-nvm use
-```
-
-Then install packages:
-```
-yarn
-```
-
-And then
-```
-yarn start
-```
 
 ---
 ## 🔑 ENV FILE
@@ -38,7 +24,45 @@ REACT_APP_LIQUIDITY_PROVIDER_ADDRESS=""       # liquidity provider
 REACT_APP_INFURA_API_KEY=""                   # your infura project key
 ```
 
+Environment variables allow different views in the UI, you need to know in advance who is viewing the page.
+
+In Front.js 
+
+```javascript
+if (!active) {
+    return <ConnectPage />;
+}
+
+if (account === process.env.REACT_APP_EMPLOYER_ADDRESS) {
+    return <EmployerPage />;
+}
+
+if (account === process.env.REACT_APP_LIQUIDITY_PROVIDER_ADDRESS) {
+    return <LiquidityProviderPage />;
+}
+```
+Addresses that have an associated salary will be able to see their monthly salary and withdrawal history.
+
+Those who do not receive a salary and therefore are not an employee see only the login screen.
+
 ---
+
+The project contains `.nvmrc` file with node version to use. Please run:
+```
+nvm use
+```
+
+Then install packages:
+```
+yarn
+```
+
+And then
+```
+yarn start
+```
+
+
 
 
 ## Available Scripts
