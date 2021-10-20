@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-
+import * as R from "ramda";
 import { styled } from "@mui/material/styles";
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -27,6 +28,11 @@ const TableAddedEmployeeHistory = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (R.isEmpty(events)) {
+    return null;
+  }
+
   return (
     <>
       <Typography
