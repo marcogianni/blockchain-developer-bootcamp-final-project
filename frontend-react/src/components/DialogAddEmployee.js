@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import * as R from "ramda";
+import { parseEther } from "@ethersproject/units";
+
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -16,7 +18,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import DAILogo from "svg/DAILogo";
 
 import { useSalaries } from "hooks/useSalaries";
-import { parseEther } from "@ethersproject/units";
+
 import { warningNotification } from "notifications";
 
 export default function DialogAddEmployee({
@@ -39,7 +41,6 @@ export default function DialogAddEmployee({
     );
 
     const error = R.pathOr(null, ["err", "error", "message"], trx);
-    console.debug("TRX", { trx, error });
 
     if (error) {
       warningNotification(error);

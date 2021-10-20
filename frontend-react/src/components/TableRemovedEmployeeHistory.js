@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as R from "ramda";
 import { styled } from "@mui/material/styles";
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -10,12 +11,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-import { useWeb3React } from "@web3-react/core";
 import { useSalaries } from "hooks/useSalaries";
 
 const TableRemovedEmployeeHistory = () => {
   const [events, setEvents] = useState([]);
-  const { account } = useWeb3React();
   const { fetchRemovedEmployeeHistory } = useSalaries();
 
   useEffect(async () => {

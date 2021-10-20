@@ -1,8 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { ToastContainer } from "react-toastify";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Web3ReactProvider } from "@web3-react/core";
 import { ethers } from "ethers";
+
+import { Layout, Navbar } from "components";
+import Front from "./Front";
 
 import "./App.scss";
 import "@fontsource/roboto/300.css";
@@ -10,9 +13,6 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "react-toastify/dist/ReactToastify.css";
-
-import { Layout, Navbar } from "components";
-import Front from "./Front";
 
 function getLibrary(provider) {
   return new ethers.providers.Web3Provider(provider);

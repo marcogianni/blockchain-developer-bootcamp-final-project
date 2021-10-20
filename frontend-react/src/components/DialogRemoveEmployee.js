@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import * as R from "ramda";
+
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -28,7 +29,6 @@ export default function DialogRemoveEmployee({
     const trx = await removeEmployee(form.address, setLoading);
 
     const error = R.pathOr(null, ["err", "error", "message"], trx);
-    console.debug("TRX", { trx, error });
 
     if (error) {
       warningNotification(error);

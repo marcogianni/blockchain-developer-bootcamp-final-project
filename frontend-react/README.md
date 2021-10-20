@@ -44,7 +44,7 @@ if (account === process.env.REACT_APP_LIQUIDITY_PROVIDER_ADDRESS) {
     return <LiquidityProviderPage />;
 }
 ```
-Addresses that have an associated salary will be able to see their monthly salary and withdrawal history.
+Addresses that have an associated salary will be able to see their monthly salary and withdrawal history. 
 
 Those who do not receive a salary and therefore are not an employee see only the login screen.
 

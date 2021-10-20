@@ -10,14 +10,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 
-import { useWeb3React } from "@web3-react/core";
 import { useSalaries } from "hooks/useSalaries";
 
 import DAILogo from "svg/DAILogo";
 
 const TableAddedEmployeeHistory = () => {
   const [events, setEvents] = useState([]);
-  const { account } = useWeb3React();
   const { fetchAddedEmployeeHistory } = useSalaries();
 
   useEffect(async () => {
