@@ -29,7 +29,7 @@ REACT_APP_LIQUIDITY_PROVIDER_ADDRESS=""       # liquidity provider
 
 Environment variables allow different views in the UI, you need to know in advance who is viewing the page.
 
-In Front.js 
+In `src/Front.js` 
 
 ```javascript
 if (!active) {
@@ -73,4 +73,26 @@ yarn start
 
 The application looks like this at first startup.
 
-<img src="../frontend-react/src/images/0.png">
+<img src="../frontend-react/src/images/0.png" style="width: 100%;">
+
+The contract owner, by connecting with Metamask to the Rinkeby network can have access to all information.
+
+He can see:
+1. Total number of employees receiving a salary in DAI tokens
+2. The liquidity provider allowance. Allows the employer to make sure the contract is authorized to spend the liquidity provider's DAI for that amount.
+3. The total balance that the liquidity provider owns.
+4. One button to add an employee and one to remove an employee.
+
+<img src="../frontend-react/src/images/1.png" style="width: 100%;">
+
+If the liquidity provider also connects its wallet, an "Approve Smart Contract" button appears, allowing you to set an allowance value.
+
+<img src="../frontend-react/src/images/2.png" style="width: 100%;">
+
+The dialog to add a new employee:
+
+<img src="../frontend-react/src/images/4.png" style="width: 100%;">
+
+On the main page the employer will be able to see their employees' payroll withdrawals and a history of adding or removing them.
+
+<img src="../frontend-react/src/images/5.png" style="width: 100%;">
