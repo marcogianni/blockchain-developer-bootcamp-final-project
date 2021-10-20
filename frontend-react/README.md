@@ -1,15 +1,22 @@
 # Frontend React
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Website available here [blockchain-developer-bootcamp-final-project-marcogianni.vercel.app/](https://blockchain-developer-bootcamp-final-project-marcogianni.vercel.app/)
-
+### Website available here: [blockchain-developer-bootcamp-final-project-marcogianni.vercel.app/](https://blockchain-developer-bootcamp-final-project-marcogianni.vercel.app/)
 
 ## Usage & Configuration
 
+<<<<<<< Updated upstream
 In addition to using the environment variables, you must also perform the following steps to configure the project.
 
+=======
+The frontend is structured in such a way that only certain users can view informations. 
+If instead you intend to deploy a new smart contract you must then update the frontent project and follow the following steps.
 
----
+1. Update address of `SalariesProxy.js` in `src/contracts`  
+2. Update address of `Salaries.js` in `src/contracts`
+>>>>>>> Stashed changes
+
+ABIs should remain the same.
+The next step is the creation of the `.env` file.
 ## 🔑 ENV FILE
 
 Create an `.env` file on project root. Here the path:
@@ -21,9 +28,9 @@ The env file shoud contain:
 ```
 REACT_APP_EMPLOYER_ADDRESS=""                 # contract owner
 REACT_APP_LIQUIDITY_PROVIDER_ADDRESS=""       # liquidity provider
-REACT_APP_INFURA_API_KEY=""                   # your infura project key
 ```
 
+<<<<<<< Updated upstream
 Environment variables allow different views in the UI, you need to know in advance who is viewing the page.
 
 In Front.js 
@@ -89,45 +96,27 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+=======
+>>>>>>> Stashed changes
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+The project contains `.nvmrc` file with node version to use. Please run:
+```
+nvm use
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Then install packages:
+```
+yarn
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+And then
+```
+yarn start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 🖥️ Screenshots
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The application looks like this at first startup.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<img src="../frontend-react/src/images/0.png">
