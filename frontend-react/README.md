@@ -4,16 +4,13 @@
 
 ## Usage & Configuration
 
-<<<<<<< Updated upstream
-In addition to using the environment variables, you must also perform the following steps to configure the project.
 
-=======
 The frontend is structured in such a way that only certain users can view informations. 
 If instead you intend to deploy a new smart contract you must then update the frontent project and follow the following steps.
 
 1. Update address of `SalariesProxy.js` in `src/contracts`  
 2. Update address of `Salaries.js` in `src/contracts`
->>>>>>> Stashed changes
+
 
 ABIs should remain the same.
 The next step is the creation of the `.env` file.
@@ -30,7 +27,6 @@ REACT_APP_EMPLOYER_ADDRESS=""                 # contract owner
 REACT_APP_LIQUIDITY_PROVIDER_ADDRESS=""       # liquidity provider
 ```
 
-<<<<<<< Updated upstream
 Environment variables allow different views in the UI, you need to know in advance who is viewing the page.
 
 In Front.js 
@@ -72,48 +68,6 @@ yarn start
 
 
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-=======
->>>>>>> Stashed changes
-
-
-The project contains `.nvmrc` file with node version to use. Please run:
-```
-nvm use
-```
-
-Then install packages:
-```
-yarn
-```
-
-And then
-```
-yarn start
-```
 
 ## 🖥️ Screenshots
 
