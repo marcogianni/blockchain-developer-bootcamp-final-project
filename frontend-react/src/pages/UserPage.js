@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import * as R from "ramda";
 import { useWeb3React } from "@web3-react/core";
-import { formatUnits } from "@ethersproject/units";
 
 import { useSalaries } from "hooks/useSalaries";
 import { useDAI } from "hooks/useDAI";
@@ -8,8 +8,13 @@ import { useDAI } from "hooks/useDAI";
 import { HeaderUser } from "components";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import LoadingButton from "@mui/lab/LoadingButton";
+import CallReceivedIcon from "@mui/icons-material/CallReceived";
+
+import { warningNotification, successNotification } from "notifications";
 
 const UserPage = () => {
+  const [loading, setLoading] = useState(false);
   const [salary, setSalary] = useState(0);
   const [balance, setBalance] = useState(0);
   const [calcs, setCalcs] = useState({
@@ -20,7 +25,8 @@ const UserPage = () => {
   const { account } = useWeb3React();
 
   const { fetchBalanceOf } = useDAI();
-  const { fetchEmployeeSalary, fetchCalculateWithdrawal } = useSalaries();
+  const { fetchEmployeeSalary, fetchCalculateWithdrawal, withdraw } =
+    useSalaries();
 
   const updateBalance = async () => {
     const bal = await fetchBalanceOf(account);
@@ -45,6 +51,19 @@ const UserPage = () => {
     getWithDrawalCalc();
   }, [account]);
 
+  const handleClick = async () => {
+    const trx = await withdraw(setLoading);
+    const error = R.pathOr(null, ["err", "error", "message"], trx);
+
+    if (error) {
+      warningNotification(error);
+    } else {
+      successNotification("Accumulated salary successfully withdrawn");
+      updateBalance();
+      getWithDrawalCalc();
+    }
+  };
+
   if (salary == 0.0) {
     return (
       <Alert severity="warning" variant="filled" style={{ fontSize: 25 }}>
@@ -63,6 +82,21 @@ const UserPage = () => {
         finalBalanceToWithdraw={calcs.finalBalanceToWithdraw}
         monthsCount={calcs.monthsCount}
       />
+
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <LoadingButton
+          loading={loading}
+          disabled={calcs.finalBalanceToWithdraw == 0}
+          size="large"
+          variant="contained"
+          color={"info"}
+          startIcon={<CallReceivedIcon />}
+          onClick={handleClick}
+          style={{ marginTop: 15 }}
+        >
+          Withdraw accumulated salary
+        </LoadingButton>
+      </div>
     </>
   );
 };

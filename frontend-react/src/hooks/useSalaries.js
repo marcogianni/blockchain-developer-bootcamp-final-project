@@ -82,13 +82,16 @@ export const useSalaries = () => {
     return marshalSalaryWithdrawalEvents(events);
   };
 
-  const withdraw = async () => {
+  const withdraw = async (setLoading) => {
     if (account && isValidNetwork) {
       try {
+        setLoading(true);
         const txn = await SalariesContract.withdraw();
         await txn.wait(1);
+        setLoading(false);
       } catch (err) {
         console.err("withdraw.error", err);
+        setLoading(false);
         return { err };
       }
     }
