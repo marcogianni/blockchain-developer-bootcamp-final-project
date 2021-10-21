@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import * as R from "ramda";
 import { useWeb3React } from "@web3-react/core";
-import { formatUnits } from "@ethersproject/units";
+import { formatUnits, formatEther } from "@ethersproject/units";
 
 import { useContract } from "./useContract";
 import useIsValidNetwork from "./useIsValidNetwork";
@@ -52,12 +52,12 @@ export const useSalaries = () => {
   };
 
   const fetchCalculateWithdrawal = async (account) => {
-    const { finalBalanceToWithdraw, monthsCount } =
+    const [finalBalanceToWithdraw, monthsCount] =
       await SalariesContract.calculateWithdrawal(account);
 
     return {
-      finalBalanceToWithdraw: formatUnits(finalBalanceToWithdraw, 18),
-      monthsCount,
+      finalBalanceToWithdraw: formatEther(finalBalanceToWithdraw),
+      monthsCount: Number(formatEther(monthsCount)).toFixed(0),
     };
   };
 
