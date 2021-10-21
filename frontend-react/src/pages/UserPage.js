@@ -6,6 +6,8 @@ import { useSalaries } from "hooks/useSalaries";
 import { useDAI } from "hooks/useDAI";
 
 import { HeaderUser } from "components";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 const UserPage = () => {
   const [salary, setSalary] = useState(0);
@@ -28,22 +30,30 @@ const UserPage = () => {
   const getUserSalary = async () => {
     const sal = await fetchEmployeeSalary(account);
     setSalary(sal);
-    console.debug("UserPage.getUserSalary", sal);
   };
 
   const getWithDrawalCalc = async () => {
     const { finalBalanceToWithdraw, monthsCount } =
       await fetchCalculateWithdrawal(account);
 
-    setCalcs((s) => ({ finalBalanceToWithdraw, monthsCount }));
-    console.debug("getWithDrawalCalc", { finalBalanceToWithdraw, monthsCount });
+    setCalcs({ finalBalanceToWithdraw, monthsCount });
   };
 
   useEffect(() => {
     getUserSalary();
     updateBalance();
     getWithDrawalCalc();
-  }, []);
+  }, [account]);
+
+  if (salary == 0.0) {
+    return (
+      <Alert severity="warning" variant="filled" style={{ fontSize: 25 }}>
+        <AlertTitle>Error</AlertTitle>
+        You do not appear to be an employee of this company, you are not
+        authorized to view.
+      </Alert>
+    );
+  }
 
   return (
     <>

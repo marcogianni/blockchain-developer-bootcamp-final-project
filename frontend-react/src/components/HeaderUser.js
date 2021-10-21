@@ -17,7 +17,7 @@ const HeaderUser = ({
 }) => {
   return (
     <Grid container spacing={2}>
-      <Grid item xs={3}>
+      <Grid item xs={4}>
         <Card style={{ background: "#f5ac37" }}>
           <CardContent>
             <Typography
@@ -36,7 +36,7 @@ const HeaderUser = ({
         </Card>
       </Grid>
 
-      <Grid item xs={9}>
+      <Grid item xs={8}>
         <Card>
           <CardContent>
             <Typography
@@ -62,7 +62,7 @@ const HeaderUser = ({
               variant="h6"
               style={{ display: "flex", alignItems: "center" }}
             >
-              Salary you can withdraw
+              Accumulated Salary withdrawable
             </Typography>
             <Typography variant="h4">
               <span style={{ display: "flex" }}>
