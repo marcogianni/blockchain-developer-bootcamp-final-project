@@ -82,6 +82,15 @@ export const useSalaries = () => {
     return marshalSalaryWithdrawalEvents(events);
   };
 
+  const fetchUserSalaryWithdrawalHistory = async (address) => {
+    const filter = SalariesContract.filters.SalaryWithdrawal(address);
+
+    const events = await SalariesContract.queryFilter(filter);
+    // TODO to verifiy
+    console.debug("fetchUserSalaryWithdrawalHistory", events);
+    return marshalSalaryWithdrawalEvents(events);
+  };
+
   const withdraw = async (setLoading) => {
     if (account && isValidNetwork) {
       try {
@@ -90,7 +99,7 @@ export const useSalaries = () => {
         await txn.wait(1);
         setLoading(false);
       } catch (err) {
-        console.err("withdraw.error", err);
+        console.error("withdraw.error", err);
         setLoading(false);
         return { err };
       }
@@ -150,5 +159,6 @@ export const useSalaries = () => {
     fetchAddedEmployeeHistory,
     fetchRemovedEmployeeHistory,
     fetchSalaryWithdrawalEmployeeHistory,
+    fetchUserSalaryWithdrawalHistory,
   };
 };

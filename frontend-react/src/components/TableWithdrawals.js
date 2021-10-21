@@ -15,12 +15,12 @@ import { useSalaries } from "hooks/useSalaries";
 
 import DAILogo from "svg/DAILogo";
 
-const TableEmployeesWithdrawals = () => {
+const TableWithdrawals = ({ account }) => {
   const [events, setEvents] = useState([]);
-  const { fetchSalaryWithdrawalEmployeeHistory } = useSalaries();
+  const { fetchUserSalaryWithdrawalHistory } = useSalaries();
 
   const fetchData = async () => {
-    const events = await fetchSalaryWithdrawalEmployeeHistory();
+    const events = await fetchUserSalaryWithdrawalHistory(account);
     setEvents(events);
   };
 
@@ -45,15 +45,13 @@ const TableEmployeesWithdrawals = () => {
         }}
         component="span"
       >
-        Latest employee withdrawals
+        Latest withdrawals
       </Typography>
       <TableContainer component={Paper} style={{ marginBottom: 100 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>EMPLOYEE</StyledTableCell>
               <StyledTableCell align="left">WITHDRAWAL DATE</StyledTableCell>
-              {/* <StyledTableCell align="left">PERIOD DATE</StyledTableCell> */}
               <StyledTableCell align="left">OF MONTHS</StyledTableCell>
               <StyledTableCell align="right">TOTAL WITHDRAWN</StyledTableCell>
             </TableRow>
@@ -64,11 +62,7 @@ const TableEmployeesWithdrawals = () => {
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <StyledTableCell component="th" scope="row">
-                  {row.address}
-                </StyledTableCell>
                 <StyledTableCell align="left">{row.date}</StyledTableCell>
-                {/* <StyledTableCell align="left">{row.period}</StyledTableCell> */}
                 <StyledTableCell align="left">{row.months}</StyledTableCell>
                 <StyledTableCell align="right">
                   <span
@@ -112,4 +106,4 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-export default TableEmployeesWithdrawals;
+export default TableWithdrawals;

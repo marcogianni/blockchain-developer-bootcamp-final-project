@@ -31,7 +31,7 @@ export const useDAI = () => {
         await txn.wait(1);
         setLoading(false);
       } catch (err) {
-        console.err("approve.error", err);
+        console.error("approve.error", err);
         setLoading(false);
         return { err };
       }

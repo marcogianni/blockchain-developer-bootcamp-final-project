@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
 import * as R from "ramda";
 import { useWeb3React } from "@web3-react/core";
@@ -5,17 +7,18 @@ import { useWeb3React } from "@web3-react/core";
 import { useSalaries } from "hooks/useSalaries";
 import { useDAI } from "hooks/useDAI";
 
-import { HeaderUser } from "components";
+import { HeaderUser, TableWithdrawals } from "components";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CallReceivedIcon from "@mui/icons-material/CallReceived";
+import Typography from "@mui/material/Typography";
 
 import { warningNotification, successNotification } from "notifications";
 
 const UserPage = () => {
   const [loading, setLoading] = useState(false);
-  const [salary, setSalary] = useState(0);
+  const [salary, setSalary] = useState(null);
   const [balance, setBalance] = useState(0);
   const [calcs, setCalcs] = useState({
     finalBalanceToWithdraw: 0.0,
@@ -76,6 +79,21 @@ const UserPage = () => {
 
   return (
     <>
+      <Typography
+        variant="h5"
+        style={{
+          color: "white",
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          textAlign: "left",
+          marginTop: 0,
+          marginBottom: 30,
+          fontWeight: "bold",
+          fontSize: 25,
+        }}
+      >
+        User dashboard
+      </Typography>
       <HeaderUser
         balance={balance}
         salary={salary}
@@ -92,11 +110,13 @@ const UserPage = () => {
           color={"info"}
           startIcon={<CallReceivedIcon />}
           onClick={handleClick}
-          style={{ marginTop: 15 }}
+          style={{ marginTop: 15, height: 60 }}
         >
           Withdraw accumulated salary
         </LoadingButton>
       </div>
+
+      <TableWithdrawals account={account} />
     </>
   );
 };

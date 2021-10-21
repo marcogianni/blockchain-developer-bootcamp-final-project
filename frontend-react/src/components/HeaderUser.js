@@ -11,7 +11,7 @@ import DAILogo from "svg/DAILogo";
 
 const HeaderUser = ({
   balance,
-  salary,
+  salary = 0.0,
   finalBalanceToWithdraw,
   monthsCount,
 }) => {
@@ -63,6 +63,12 @@ const HeaderUser = ({
               style={{ display: "flex", alignItems: "center" }}
             >
               Accumulated Salary withdrawable
+              <Tooltip
+                title="Your paycheck is cumulative, this means you can choose to withdraw a paycheck every month or after several months. If you withdraw less often you will have lower transaction costs."
+                arrow
+              >
+                <HelpIcon style={{ marginLeft: 10 }} />
+              </Tooltip>
             </Typography>
             <Typography variant="h4">
               <span style={{ display: "flex" }}>
