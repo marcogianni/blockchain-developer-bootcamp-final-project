@@ -9,6 +9,8 @@ import Tooltip from "@mui/material/Tooltip";
 
 import DAILogo from "svg/DAILogo";
 
+import { formatCurrency } from "utils/generic";
+
 const HeaderUser = ({
   balance,
   salary = 0.0,
@@ -29,7 +31,7 @@ const HeaderUser = ({
             <Typography variant="h4">
               <span style={{ display: "flex" }}>
                 <DAILogo style={{ width: 30, marginRight: 5 }} />
-                {salary}
+                {formatCurrency(salary)}
               </span>
             </Typography>
           </CardContent>
@@ -48,7 +50,7 @@ const HeaderUser = ({
             <Typography variant="h4">
               <span style={{ display: "flex" }}>
                 <DAILogo style={{ width: 30, marginRight: 5 }} />
-                {balance}
+                {formatCurrency(balance)}
               </span>
             </Typography>
           </CardContent>
@@ -73,7 +75,7 @@ const HeaderUser = ({
             <Typography variant="h4">
               <span style={{ display: "flex" }}>
                 <DAILogo style={{ width: 30, marginRight: 5 }} />
-                {finalBalanceToWithdraw}
+                {formatCurrency(finalBalanceToWithdraw)}
               </span>
             </Typography>
           </CardContent>
