@@ -43,10 +43,12 @@ if (account === process.env.REACT_APP_EMPLOYER_ADDRESS) {
 if (account === process.env.REACT_APP_LIQUIDITY_PROVIDER_ADDRESS) {
     return <LiquidityProviderPage />;
 }
+
+return <UserPage />;
 ```
 Addresses that have an associated salary will be able to see their monthly salary and withdrawal history. 
 
-Those who do not receive a salary and therefore are not an employee see only the login screen.
+Those who do not receive a salary and therefore are not an employee see only warning message.
 
 ---
 
@@ -77,7 +79,7 @@ The application looks like this at first startup.
 
 The contract owner, by connecting with Metamask to the Rinkeby network can have access to all information.
 
-He can see:
+Employer can see:
 1. Total number of employees receiving a salary in DAI tokens
 2. The liquidity provider allowance. Allows the employer to make sure the contract is authorized to spend the liquidity provider's DAI for that amount.
 3. The total balance that the liquidity provider owns.

@@ -40,7 +40,7 @@ Check `TOKEN_ADDRESS` (DAI Rinkeby) in `/scripts/deploy.js` and then:
 ```
 npx hardhat run scripts/deploy.js
 ```
-**WARNING: You should set an address of an ERC20 Token with 18 decimals (default ERC20)**.
+**⚠️ WARNING: You should set an address of an ERC20 Token with 18 decimals (default ERC20)**.
 I used DAI in Rinkeby network, to get DAI use [Compound](https://app.compound.finance/). You can only request 100 DAI at a time.
 
 In my tests I deployed a token called DAI, this allowed me to have a large availability of tokens to be sent to the liquidity provider address.
@@ -57,9 +57,6 @@ Remember to add the `PROXY_ADDRESS` in `/scripts/upgrade.js` and then:
 ```
 npx hardhat run scripts/upgrade.js
 ```
-
-State variable can't change, upgrade script allows only to update functions or add new state variables.
-
 *(If I had time before November 30, I would use this script to add the employee salary update functionality to the Salaries smart contract).
 
 
@@ -109,10 +106,3 @@ LIQUIDY_PROVIDER_ADDRESS=     # employees receive their salary thanks to this ad
 - SafeMath to avoid Integer Over/Underflow (SWC-101)
 - Avoid txOrigin attack (SWC-115)
 - Using new Solidity (SWC-102)
-
-
-## ⚓ NFT certification
-
-```
-0x2176f4b766CD63C4b59CfDeb7d8A599A7Ae5F569
-```
