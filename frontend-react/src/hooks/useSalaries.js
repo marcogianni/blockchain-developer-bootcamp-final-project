@@ -86,7 +86,8 @@ export const useSalaries = () => {
     const filter = SalariesContract.filters.SalaryWithdrawal(address);
 
     const events = await SalariesContract.queryFilter(filter);
-    // TODO to verifiy
+    // TODO to verify
+    // I will test this function on November 19th, which is when it will be possible for employees to collect their salary. Just pull the main branch
     console.debug("fetchUserSalaryWithdrawalHistory", events);
     return marshalSalaryWithdrawalEvents(events);
   };
