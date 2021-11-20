@@ -57,7 +57,7 @@ export const useSalaries = () => {
 
     return {
       finalBalanceToWithdraw: formatEther(finalBalanceToWithdraw),
-      monthsCount: Number(formatEther(monthsCount)).toFixed(0),
+      monthsCount: formatUnits(monthsCount, 0),
     };
   };
 
