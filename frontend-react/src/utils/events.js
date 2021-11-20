@@ -1,6 +1,6 @@
 import * as R from "ramda";
 import moment from "moment";
-import { formatUnits, formatEther } from "@ethersproject/units";
+import { formatUnits } from "@ethersproject/units";
 
 export const marshalEmployeeAddedEvents = (events) => {
   if (R.isEmpty(events)) {
