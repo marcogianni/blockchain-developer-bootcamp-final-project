@@ -1,6 +1,6 @@
 import * as R from "ramda";
 import moment from "moment";
-import { formatUnits } from "@ethersproject/units";
+import { formatUnits, formatEther } from "@ethersproject/units";
 
 export const marshalEmployeeAddedEvents = (events) => {
   if (R.isEmpty(events)) {
@@ -46,7 +46,7 @@ export const marshalSalaryWithdrawalEvents = (events) => {
         id: single.transactionHash,
         address: single.args.sender,
         amount: formatUnits(single.args.totalWithdrawalAmount),
-        months: single.args.months,
+        months: formatUnits(single.args.months, 0),
         date: moment
           .unix(single.args.transactionTimestamp.toString())
           .format("LLL"),
