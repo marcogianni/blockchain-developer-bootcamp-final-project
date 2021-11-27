@@ -198,11 +198,11 @@ contract Salaries is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgrade
          * decides to fire him, the withdraw transaction passes but the employee does not receive the
          * salary as expected.
          */
-        for (uint256 i = dates[_employee]; i <= _now(); i = i + MONTH) {
+        for (uint256 i = dates[_employee]; i <= _now(); i = i.add(MONTH)) {
             if (_now() > i + MONTH) {
                 // If a salary removal date has been scheduled and the date
                 // is in the 30-day range, do not add to the count.
-                if (removalDates[_employee] != 0 && removalDates[_employee] < i + MONTH) {
+                if (removalDates[_employee] != 0 && removalDates[_employee] < i.add(MONTH)) {
                     break;
                 }
                 monthsCount++;
@@ -211,7 +211,7 @@ contract Salaries is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgrade
             }
         }
 
-        return (salaries[_employee] * monthsCount, monthsCount);
+        return (salaries[_employee].mul(monthsCount), monthsCount);
     }
 
     /**
