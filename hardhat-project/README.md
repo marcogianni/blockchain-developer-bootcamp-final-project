@@ -4,9 +4,7 @@
 
 The Salaries smart contract allows the employer, to associate a monthly salary with each employee. 
 
-Once the employer has deployed the contract, it must call the `initialize` function, which allows it to define the ERC20 token (18 decimals) to be used for salaries, and the liquidity provider (one of its addresses probably) that must own that ERC20 token.
-
-*Note: Liquidity Provider must `approve` contract.
+*Note: Liquidity Provider must `approve` contract. The liquidity provider can connect with web3 to the react application and will be able to approve the contract.
 
 Once the configuration is complete, the employer can associate a monthly salary with their employees, using `addEmployee` method.
 
@@ -36,7 +34,7 @@ npx hardhat test
 ---
 ### ➡️ DEPLOY
 
-Check `TOKEN_ADDRESS` (DAI Rinkeby) in `/scripts/deploy.js` and then:
+Check `TOKEN_ADDRESS` (DAI Rinkeby) in `/scripts/deploy.js` and  env var `LIQUIDY_PROVIDER_ADDRESS` and then:
 ```
 npx hardhat run scripts/deploy.js
 ```
@@ -106,3 +104,8 @@ LIQUIDY_PROVIDER_ADDRESS=     # employees receive their salary thanks to this ad
 - SafeMath to avoid Integer Over/Underflow (SWC-101)
 - Avoid txOrigin attack (SWC-115)
 - Using new Solidity (SWC-102)
+
+## 🌍 Deployed Address (Rinkeby)
+
+- Implementation Contract `0x3EC3479b4DC851287Ce72F6C00E0D6DA46a43Ee1`
+- ERC1967Proxy Contract `0xd9ABD52c3A991C9f73eb6232Ed3C3bdaE09B8Fd7`
