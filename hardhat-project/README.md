@@ -109,3 +109,9 @@ LIQUIDY_PROVIDER_ADDRESS=     # employees receive their salary thanks to this ad
 
 - Implementation Contract `0x3EC3479b4DC851287Ce72F6C00E0D6DA46a43Ee1`
 - ERC1967Proxy Contract `0xd9ABD52c3A991C9f73eb6232Ed3C3bdaE09B8Fd7`
+
+## ⚓ NFT certification
+
+```
+0x2176f4b766CD63C4b59CfDeb7d8A599A7Ae5F569
+```
